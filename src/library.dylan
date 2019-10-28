@@ -8,7 +8,9 @@ end library brainfuck;
 define module brainfuck
   use common-dylan;
   use streams;
+  use streams-internals;
   use format-out;
+
   export
     <brainfuck>,
     pp,pp-setter,
