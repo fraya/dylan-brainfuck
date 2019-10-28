@@ -6,7 +6,7 @@ Copyright: GPLv3
 define constant <program>
   = limited(<stretchy-vector>, of: <symbol>);
 
-define constant $default-tape-size :: <integer> = 5;
+define constant $default-tape-size :: <integer> = 3000;
 
 ///
 ///  Brainfuck abstract machine.
