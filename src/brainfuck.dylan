@@ -83,7 +83,7 @@ define method increment-pointer
   (bf :: <brainfuck>)
   => (bf :: <brainfuck>)
   bf.dp := bf.dp + 1;
-  if (bf.dp > size(bf.tape))
+  if (bf.dp > bf.tape.size)
     error("Memory overflow");
   end;
   bf
@@ -102,7 +102,7 @@ end method decrement-pointer;
 define method run
   (bf :: <brainfuck>)
   => ()
-  while (bf.pp < size(bf.program))
+  while (bf.pp < bf.program.size)
     //format-out("pp: %d dp: %d\n", bf.pp, bf.dp);
     select (bf.program[bf.pp])
       #"increment-data" =>
