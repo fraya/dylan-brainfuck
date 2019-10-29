@@ -5,7 +5,7 @@ Brainfuck interpreter written in Dylan.
 
 ### General
 
-- [ ] Load source code from a file
+- [X] Load source code from a file
 
 ### Instructions
 
@@ -14,7 +14,7 @@ Brainfuck interpreter written in Dylan.
 - [X] increment-pointer
 - [X] decrement-pointer
 - [ ] input
-- [ ] output
+- [X] output
 - [ ] jump-forward
 - [ ] jump-backward
 
