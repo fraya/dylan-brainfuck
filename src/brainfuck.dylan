@@ -6,6 +6,9 @@ Copyright: GPLv3
 define constant <program>
   = limited(<stretchy-vector>, of: <symbol>);
 
+define constant <tape>
+  = limited(<stretchy-vector>, of: <byte>);
+
 define constant $default-tape-size :: <integer> = 3000;
 
 ///
@@ -23,9 +26,9 @@ define constant $default-tape-size :: <integer> = 3000;
 define class <brainfuck> (<object>)
   slot program :: <program>,
     required-init-keyword: program:;
-  slot tape :: <simple-object-vector>,
+  slot tape :: <tape>,
     init-keyword: tape:,
-    init-value: make(<simple-object-vector>, size: $default-tape-size, fill: 0);
+    init-value: make(<tape>, size: $default-tape-size, fill: 0);
   slot pp :: <integer>,  
     init-value: 0;
   slot dp :: <integer>,
@@ -36,7 +39,7 @@ end class <brainfuck>;
 /// Encode each character as a symbol that represents an instruction
 ///
 define function encode-character
-  (char :: <character>)
+  (char :: <byte>)
   => (instruction :: <symbol>)
   select (char)
     '>' => #"increment-pointer";
@@ -122,14 +125,27 @@ define method run
   end while;
 end method run;
 
+define method tokenize
+  (filename :: <string>)
+  => (program :: <program>)
+  let fs = make(<file-stream>, locator: filename, element-type: <byte>);
+  let rs = encode-stream(fs);
+  close(fs);
+  rs
+end method tokenize;
+
 define function main
   (name :: <string>, arguments :: <vector>)
-  let stream   = make(<string-stream>, contents: "++-");
-  let program  = encode-stream(stream);
-  let bf       = make(<brainfuck>, program: program);
-  run(bf);
-  //format-out("tape[%d]=%d\n", bf.dp, bf.tape[bf.dp]);
-  exit-application(0);
+  if (arguments.size < 1)
+    format-out("Usage: %s <program>\n", application-name());
+    exit-application(1);
+  else
+    let program  = tokenize(arguments[0]);
+    let bf       = make(<brainfuck>, program: program);
+    run(bf);
+    exit-application(0);
+    format-out("%=\n", bf.tape);
+  end;
 end function main;
 
 main(application-name(), application-arguments());
