@@ -3,13 +3,15 @@ Module: dylan-user
 define library brainfuck
   use common-dylan;
   use io;
+  use system;
+  use strings;
 end library brainfuck;
 
 define module brainfuck
   use common-dylan;
-  use streams;
-  use streams-internals;
   use format-out;
+  use streams;
+  use file-system;
 
   export
     <brainfuck>,
