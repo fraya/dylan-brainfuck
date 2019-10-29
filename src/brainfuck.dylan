@@ -36,12 +36,12 @@ define class <brainfuck> (<object>)
 end class <brainfuck>;
 
 ///
-/// Encode each character as a symbol that represents an instruction
+/// Read an instruction from a <character>
 ///
-define function encode-character
-  (char :: <byte>)
+define function read-instruction
+  (c :: <byte>)
   => (instruction :: <symbol>)
-  select (char)
+  select (as(<character>, c))
     '>' => #"increment-pointer";
     '<' => #"decrement-pointer";
     '+' => #"increment-data";
@@ -53,20 +53,20 @@ define function encode-character
     otherwise
       => #"comment";
   end select;
-end function encode-character;
+end function read-instruction;
 
 ///
-/// Encode a <stream> of characters as a <program>
+/// Read a brainfuck <program> from a <stream>
 ///
-define function encode-stream
+define method read-program
   (stream :: <stream>)
   => (program :: <program>)
   let program = make(<program>);
   while (~stream-at-end?(stream))
-    add!(program, encode-character(read-element(stream)));
+    add!(program, read-instruction(read-element(stream)));
   end while;
   program;
-end function encode-stream;
+end method read-program;
 
 define method increment-data
   (bf :: <brainfuck>)
@@ -102,11 +102,18 @@ define method decrement-pointer
   bf
 end method decrement-pointer;
 
+define method output
+  (bf :: <brainfuck>)
+  => (bf :: <brainfuck>)
+  format-out("%=", bf.tape[bf.dp]);
+  bf
+end method output;
+
 define method run
   (bf :: <brainfuck>)
   => ()
   while (bf.pp < bf.program.size)
-    //format-out("pp: %d dp: %d\n", bf.pp, bf.dp);
+    format-out("pp[%d]=%= tape[%d]=%d\n", bf.pp, bf.program[bf.pp], bf.dp, bf.tape[bf.dp]);
     select (bf.program[bf.pp])
       #"increment-data" =>
 	increment-data(bf);
@@ -116,10 +123,12 @@ define method run
 	increment-pointer(bf);
       #"decrement-pointer" =>
 	decrement-pointer(bf);
+      #"output" =>
+	output(bf);
       #"comment" =>
 	;
     otherwise =>
-      error("Invalid instruction '%s'", bf.program[bf.pp]);	
+      error("Invalid instruction '%='", bf.program[bf.pp]);
     end;
     bf.pp := bf.pp + 1;
   end while;
@@ -128,9 +137,9 @@ end method run;
 define method tokenize
   (filename :: <string>)
   => (program :: <program>)
-  let fs = make(<file-stream>, locator: filename, element-type: <byte>);
-  let rs = encode-stream(fs);
-  close(fs);
+  let is = make(<byte-file-stream>, locator: filename);
+  let rs = read-program(is);
+  close(is);
   rs
 end method tokenize;
 
@@ -143,8 +152,8 @@ define function main
     let program  = tokenize(arguments[0]);
     let bf       = make(<brainfuck>, program: program);
     run(bf);
+    format-out("\n");
     exit-application(0);
-    format-out("%=\n", bf.tape);
   end;
 end function main;
 
