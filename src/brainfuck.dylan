@@ -105,9 +105,43 @@ end method decrement-pointer;
 define method output
   (bf :: <brainfuck>)
   => (bf :: <brainfuck>)
-  format-out("%=", bf.tape[bf.dp]);
+  format-out("%c", as(<character>, bf.tape[bf.dp]));
   bf
 end method output;
+
+define method jump-forward
+  (bf :: <brainfuck>)
+  => (bf :: <brainfuck>)
+  unless (bf.tape[bf.dp] ~= 0)
+    let i = 1;
+    while (i > 0)
+      bf.pp := bf.pp + 1;
+      select (bf.program[bf.pp])
+	#"jump-forward"  => i := i + 1;
+	#"jump-backward" => i := i - 1;
+	otherwise => ;
+      end select;
+    end while;
+  end unless;
+  bf;
+end method jump-forward;
+
+define method jump-backward
+  (bf :: <brainfuck>)
+  => (bf :: <brainfuck>)
+  unless (bf.tape[bf.dp] = 0)
+    let i = 1;
+    while (i > 0)
+      bf.pp := bf.pp - 1;
+      select (bf.program[bf.pp])
+	#"jump-forward"  => i := i - 1;
+	#"jump-backward" => i := i + 1;
+	otherwise => ;
+      end select;
+    end while;
+  end unless;
+  bf;
+end method jump-backward;
 
 define method run
   (bf :: <brainfuck>)
@@ -125,6 +159,10 @@ define method run
 	decrement-pointer(bf);
       #"output" =>
 	output(bf);
+      #"jump-forward" =>
+	jump-forward(bf);
+      #"jump-backward" =>
+	jump-backward(bf);
       #"comment" =>
 	;
     otherwise =>

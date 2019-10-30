@@ -15,8 +15,8 @@ Brainfuck interpreter written in Dylan.
 - [X] decrement-pointer
 - [ ] input
 - [X] output
-- [ ] jump-forward
-- [ ] jump-backward
+- [X] jump-forward
+- [X] jump-backward
 
 ### Optimizations
 
