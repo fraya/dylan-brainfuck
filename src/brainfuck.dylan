@@ -145,16 +145,17 @@ end method tokenize;
 
 define function main
   (name :: <string>, arguments :: <vector>)
+  let status = 0;
   if (arguments.size < 1)
     format-out("Usage: %s <program>\n", application-name());
-    exit-application(1);
+    status := 1;
   else
     let program  = tokenize(arguments[0]);
     let bf       = make(<brainfuck>, program: program);
     run(bf);
     format-out("\n");
-    exit-application(0);
   end;
+  exit-application(status);
 end function main;
 
 main(application-name(), application-arguments());
