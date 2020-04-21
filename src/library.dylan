@@ -9,21 +9,19 @@ end library brainfuck;
 
 define module brainfuck
   use common-dylan;
+  use format;
   use format-out;
   use streams;
   use file-system;
+  use print;
+  use standard-io;
 
   export
     <brainfuck>,
-    pp,pp-setter,
-    dp, dp-setter;
+    pp,
+    dp;
   export
-    <program>, program-setter;
-  export
-    tape-setter;
-  export
-    increment-data, decrement-data,
-    increment-pointer, decrement-pointer;
+    <program>;
   export
     run;
 end module brainfuck;
