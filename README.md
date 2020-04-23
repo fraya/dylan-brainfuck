@@ -20,10 +20,10 @@ Brainfuck interpreter written in Dylan.
 
 ### Optimizations
 
-- [ ] Remove comments
-- [ ] Precomputed jumps
-- [ ] Group increment-data instructions
-- [ ] Group decrement-data instructions
-- [ ] Group increment-pointer
-- [ ] Group decrement-pointer
+- [X] Remove comments
+- [X] Precomputed jumps
+- [X] Group increment-data instructions
+- [X] Group decrement-data instructions
+- [X] Group increment-pointer
+- [X] Group decrement-pointer
 
