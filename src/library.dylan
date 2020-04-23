@@ -9,6 +9,7 @@ end library brainfuck;
 
 define module brainfuck
   use common-dylan;
+  use common-extensions;
   use format;
   use format-out;
   use streams;

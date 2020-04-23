@@ -3,77 +3,144 @@ Synopsis: Brainfuck interpreter
 Author: Fernando Raya
 Copyright: GPLv3
 
-define class <instruction> (<object>)
-end class <instruction>;
+define abstract class <instruction> (<object>)
+end class;
 
-define class <comment> (<instruction>)
-end class <comment>;
+define sealed class <comment> (<instruction>)
+end class;
 
-define class <tape-instruction> (<instruction>)
+define abstract class <tape-instruction> (<instruction>)
   slot amount :: <integer>, init-value: 1, init-keyword: amount:
-end class <tape-instruction>;
+end class;
 
-define class <increment-data> (<tape-instruction>)
-end class <increment-data>;
+define sealed class <increment-data> (<tape-instruction>)
+end class;
 
-define class <decrement-data> (<tape-instruction>)
-end class <decrement-data>;
+define sealed class <decrement-data> (<tape-instruction>)
+end class;
 
-define class <increment-pointer> (<tape-instruction>)
-end class <increment-pointer>;
+define sealed class <increment-pointer> (<tape-instruction>)
+end class;
 
-define class <decrement-pointer> (<tape-instruction>)
-end class <decrement-pointer>;
+define sealed class <decrement-pointer> (<tape-instruction>)
+end class;
 
-define class <jump> (<instruction>)
-end class <jump>;
+define abstract class <jump> (<instruction>)
+end class;
 
-define class <jump-forward> (<jump>)
-end class <jump-forward>;
+define sealed class <jump-forward> (<jump>)
+end class;
 
-define class <jump-backward> (<jump>)
-end class <jump-backward>;
+define sealed class <jump-backward> (<jump>)
+end class;
 
-define class <input> (<instruction>)
-end class <input>;
+define abstract class <precalculated-jump> (<jump>)
+  constant slot address :: <integer>, init-keyword: address:;
+end class;
 
-define class <output> (<instruction>)
-end class <output>;
+define sealed class <precalculated-jump-forward> (<precalculated-jump>)
+end class;
 
-define method print-object(i :: <comment>, s :: <stream>) => ()
+define sealed class <precalculated-jump-backward> (<precalculated-jump>)
+end class;
+
+define sealed class <input> (<instruction>)
+end class;
+
+define sealed class <output> (<instruction>)
+end class;
+
+define function make-instruction
+  (c :: <byte>)
+  => (instruction :: <instruction>)
+  select (as(<character>, c))
+    '>'
+      => make(<increment-pointer>);
+    '<'
+      => make(<decrement-pointer>);
+    '+'
+      => make(<increment-data>);
+    '-'
+      => make(<decrement-data>);
+    '.'
+      => make(<output>);
+    ','
+      => make(<input>);
+    '['
+      => make(<jump-forward>);
+    ']'
+      => make(<jump-backward>);
+    otherwise
+      => make(<comment>)
+  end select
+end function;
+
+define method print-object
+  (i :: <comment>, s :: <stream>) => ()
   write-element(s, '#')
-end method print-object;
+end method;
 
-define method print-object(i :: <increment-data>, s :: <stream>) => ()
+define method print-object
+  (i :: <tape-instruction>, s :: <stream>) => ()
+  if (i.amount > 1)
+    for (i from 1 below i.amount)
+      write-element(s, 'X')
+    end
+  end if
+end method;
+
+define method print-object
+  (i :: <increment-data>, s :: <stream>) => ()
+  next-method();
   write-element(s, '+')
-end method print-object;
+end method;
 
-define method print-object(i :: <decrement-data>, s :: <stream>) => ()
+define method print-object
+  (i :: <decrement-data>, s :: <stream>) => ()
   write-element(s, '-')
-end method print-object;
+end method;
 
-define method print-object(i :: <increment-pointer>, s :: <stream>) => ()
+define method print-object
+  (i :: <increment-pointer>, s :: <stream>) => ()
+  next-method();  
   write-element(s, '>')
 end method;
 
-define method print-object(i :: <decrement-pointer>, s :: <stream>) => ()
+define method print-object
+  (i :: <decrement-pointer>, s :: <stream>) => ()
+  next-method();  
   write-element(s, '<')
 end method;
 
-define method print-object(i :: <jump-forward>, s :: <stream>) => ()
+define method print-object
+  (i :: <jump-forward>, s :: <stream>) => ()
   write-element(s, '[')
 end method;
 
-define method print-object(i :: <jump-backward>, s :: <stream>) => ()
+define method print-object
+  (i :: <jump-backward>, s :: <stream>) => ()
   write-element(s, ']')
 end method;
 
-define method print-object(i :: <input>, s :: <stream>)
-  => ()
+define method print-object
+  (i :: <precalculated-jump-forward>, s :: <stream>) => ()
+  write-element(s, 'X');
+  write-element(s, '[')
+end method;
+
+define method print-object
+  (i :: <precalculated-jump-backward>, s :: <stream>) => ()
+  write-element(s, 'X');
+  write-element(s, '[')
+end method;
+
+define method print-object
+  (i :: <input>, s :: <stream>) => ()
   write-element(s, ',')
 end method;
 
-define method print-object(i :: <output>, s :: <stream>) => ()
+define method print-object
+  (i :: <output>, s :: <stream>) => ()
   write-element(s, '.')
 end method;
 
