@@ -44,8 +44,8 @@ define function main
     format-out("optimization:\n");
     format-out("\t0: No optimization\n");
     format-out("\t1: Remove comments\n");
-    format-out("\t2: Group instructions and level 1\n");
-    format-out("\t3: Precalculate jump and level 2\n");
+    format-out("\t2: Level 1 and group instructions\n");
+    format-out("\t3: Level 2 and precalculate jumps\n");
     exit-application(1);
   end;
 
