@@ -19,10 +19,13 @@ define module brainfuck
 
   export
     <brainfuck>,
+    program,
+    tape,
     pp,
     dp;
   export
-    <program>;
+    <program>,
+    <tape>;
   export
     run;
 end module brainfuck;

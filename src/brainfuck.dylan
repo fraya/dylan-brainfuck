@@ -9,11 +9,11 @@ define constant <tape> =
 define class <brainfuck> (<object>)
   slot pp :: <integer>,
     init-value: 0;
-  slot program :: <program>,
+  constant slot program :: <program>,
     required-init-keyword: program:;
   slot dp :: <integer>,
     init-value: 0;
-  slot tape :: <tape>,
+  constant slot tape :: <tape>,
     init-keyword: tape:,
     init-value: make(<tape>, size: 3000, fill: 0);
 end class <brainfuck>;
