@@ -4,7 +4,7 @@ Author: Fernando Raya
 Copyright: GPLv3
 
 define constant <tape> =
-  limited(<stretchy-vector>, of: <byte>);
+  limited(<vector>, of: <byte>);
 
 define class <brainfuck> (<object>)
   slot pp :: <integer>,
