@@ -15,7 +15,7 @@ define class <brainfuck> (<object>)
     init-value: 0;
   constant slot tape :: <tape>,
     init-keyword: tape:,
-    init-value: make(<tape>, size: 3000, fill: 0);
+    init-value: make(<tape>, size: 30000, fill: 0);
 end class <brainfuck>;
 
 define method print-object
