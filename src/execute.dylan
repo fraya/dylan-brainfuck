@@ -1,57 +1,43 @@
 Module: brainfuck
-Synopsis: Brainfuck interpreter 
+Synopsis: Execution of each instruction
 Author: Fernando Raya
 Copyright: GPLv3
 
 define generic execute
-  (bf :: <brainfuck>, instruction :: <instruction>)
-  => (bf :: <brainfuck>);
+  (bf :: <brainfuck>, instruction :: <instruction>) => ();
 
-define method execute
-  (bf :: <brainfuck>, instruction :: <comment>)
-  => (bf :: <brainfuck>)
-  bf
+define sealed inline method execute
+  (bf :: <brainfuck>, instruction :: <comment>) => ()
 end method;
 
-define method execute
-  (bf :: <brainfuck>, instruction :: <increment-data>)
-  => (bf :: <brainfuck>)
+define sealed inline method execute
+  (bf :: <brainfuck>, instruction :: <increment-data>) => ()
   bf.tape[bf.dp] := bf.tape[bf.dp] + instruction.amount;
-  bf
 end method;
 
-define method execute
-  (bf :: <brainfuck>, instruction :: <decrement-data>)
-  => (bf :: <brainfuck>)
+define sealed inline method execute
+  (bf :: <brainfuck>, instruction :: <decrement-data>) => ()
   bf.tape[bf.dp] := bf.tape[bf.dp] - instruction.amount;
-  bf
 end method;
 
-define method execute
-  (bf :: <brainfuck>, instruction :: <increment-pointer>)
-  => (bf :: <brainfuck>)
+define sealed inline method execute
+  (bf :: <brainfuck>, instruction :: <increment-pointer>) => ()
   bf.dp := bf.dp + instruction.amount;
-  bf
 end method;
 
-define method execute
-  (bf :: <brainfuck>, instruction :: <decrement-pointer>)
-  => (bf :: <brainfuck>)
+define sealed inline method execute
+  (bf :: <brainfuck>, instruction :: <decrement-pointer>) => ()
   bf.dp := bf.dp - instruction.amount;
-  bf
 end method;
 
-define method execute
-  (bf :: <brainfuck>, instruction :: <output>)
-  => (bf :: <brainfuck>)
+define sealed inline method execute
+  (bf :: <brainfuck>, instruction :: <output>) => ()
   format-out("%c", as(<character>, bf.tape[bf.dp]));
-  force-out();
-  bf
+  force-out()
 end method;
 
-define method execute
-  (bf :: <brainfuck>, instruction :: <jump-forward>)
-  => (bf :: <brainfuck>)
+define sealed inline method execute
+  (bf :: <brainfuck>, instruction :: <jump-forward>) => ()
   unless (bf.tape[bf.dp] ~= 0)
     let i = 1;
     while (i > 0)
@@ -64,13 +50,11 @@ define method execute
 	otherwise => ;
       end select;
     end while;
-  end unless;
-  bf
+  end unless
 end method;
 
-define method execute
-  (bf :: <brainfuck>, instruction :: <jump-backward>)
-  => (bf :: <brainfuck>)
+define sealed inline method execute
+  (bf :: <brainfuck>, instruction :: <jump-backward>) => ()
   unless (bf.tape[bf.dp] = 0)
     let i = 1;
     while (i > 0)
@@ -83,24 +67,19 @@ define method execute
 	otherwise => ;
       end select;
     end while;
-  end unless;
-  bf
+  end unless
 end method;
 
-define method execute
-  (bf :: <brainfuck>, instruction :: <precalculated-jump-forward>)
-  => (bf :: <brainfuck>)
+define sealed inline method execute
+  (bf :: <brainfuck>, instruction :: <precalculated-jump-forward>) => ()
   unless (bf.tape[bf.dp] ~= 0)
     bf.pp := instruction.address
-  end;
-  bf
+  end
 end method;
 
-define method execute
-  (bf :: <brainfuck>, instruction :: <precalculated-jump-backward>)
-  => (bf :: <brainfuck>)
+define sealed inline method execute
+  (bf :: <brainfuck>, instruction :: <precalculated-jump-backward>) => ()
   unless (bf.tape[bf.dp] = 0)
     bf.pp := instruction.address
-  end;
-  bf
+  end
 end method;
