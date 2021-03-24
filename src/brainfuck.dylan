@@ -40,12 +40,12 @@ end method run;
 define function main
   (name :: <string>, arguments :: <vector>)  
   if (arguments.size < 1)
-    format-out("Usage:\n\t%s <program> [optimization]\n", application-name());
+    format-out("USAGE:\n\t%s <program> [optimization]\n\n", application-name());
     format-out("optimization:\n");
     format-out("\t0: No optimization\n");
     format-out("\t1: Remove comments\n");
     format-out("\t2: Level 1 and group instructions\n");
-    format-out("\t3: Level 2 and precalculate jumps\n");
+    format-out("\t3: Level 2 and precalculate jumps (default)\n");
     exit-application(1);
   end;
 
