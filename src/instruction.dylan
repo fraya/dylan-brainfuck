@@ -50,31 +50,31 @@ end class;
 define sealed class <output> (<instruction>)
 end class;
 
-define function make-instruction
-  (c :: <byte>)
-  => (instruction :: <instruction>)
-  select (as(<character>, c))
+define method make
+    (the-class == <instruction>, #rest init-args, #key char :: <character>)
+ => (instruction :: <instruction>)
+  select (char)
     '>'
-      => make(<increment-pointer>);
+      => apply(make, <increment-pointer>, init-args);
     '<'
-      => make(<decrement-pointer>);
+      => apply(make, <decrement-pointer>, init-args);
     '+'
-      => make(<increment-data>);
+      => apply(make, <increment-data>, init-args);
     '-'
-      => make(<decrement-data>);
+      => apply(make, <decrement-data>, init-args);
     '.'
-      => make(<output>);
+      => apply(make, <output>, init-args);
     ','
-      => make(<input>);
+      => apply(make, <input>, init-args);
     '['
-      => make(<jump-forward>);
+      => apply(make, <jump-forward>, init-args);
     ']'
-      => make(<jump-backward>);
+      => apply(make, <jump-backward>, init-args);
     otherwise
-      => make(<comment>)
+      => apply(make, <comment>, init-args)
   end select
-end function;
-
+end make;
+  
 define method print-object
   (i :: <comment>, s :: <stream>) => ()
   write-element(s, '#')

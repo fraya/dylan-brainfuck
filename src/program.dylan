@@ -7,12 +7,13 @@ define constant <program> =
   limited(<stretchy-vector>, of: <instruction>);
 
 define method read-program
-  (filename :: <string>) => (program :: <program>)
+    (filename :: <string>)
+ => (program :: <program>)
   let program = make(<program>);
   with-open-file (fs = filename, element-type: <byte>)
     while (~stream-at-end?(fs))
-      let character   = read-element(fs);
-      let instruction = make-instruction(character);
+      let character   = as(<character>, read-element(fs));
+      let instruction = make(<instruction>, char: character);
       add!(program, instruction);
     end while;
   end with-open-file;
@@ -20,14 +21,14 @@ define method read-program
 end method read-program;
 
 define method optimize-instruction
-  (x :: <instruction>, y :: <instruction>)
-  => (optimized? :: <boolean>)
+    (x :: <instruction>, y :: <instruction>)
+ => (optimized? :: <boolean>)
   #f
 end method;
 
 define method optimize-instruction
-  (x :: <tape-instruction>, y :: <tape-instruction>)
-  => (optimized? :: <boolean>)
+    (x :: <tape-instruction>, y :: <tape-instruction>)
+ => (optimized? :: <boolean>)
   if (object-class(x) = object-class(y))
     y.amount := y.amount + x.amount;
     #t
@@ -37,12 +38,14 @@ define method optimize-instruction
 end method;
 
 define method remove-comments
-  (program :: <program>) => (optimized :: <program>)
+    (program :: <program>)
+ => (optimized :: <program>)
   choose(method (x) ~instance?(x, <comment>) end, program)
 end method;
 
 define function group-optimize
-  (program :: <program>) => (optimized :: <program>)
+    (program :: <program>)
+ => (optimized :: <program>)
   let result = make(<program>);
   let stream = make(<sequence-stream>, contents: program);
   while (~stream-at-end?(stream))
@@ -61,7 +64,8 @@ define function group-optimize
 end function;
 
 define function jump-optimize
-  (program :: <program>) => (optimized :: <program>)
+    (program :: <program>)
+ => (optimized :: <program>)
   for (i from 0 below program.size)
     if (object-class(program[i]) = <jump-forward>)
       let level = 1;
@@ -93,7 +97,8 @@ define constant optimize3
   = compose(jump-optimize, optimize2);
 
 define function optimize-program
-  (program :: <program>, level :: <integer>) => (optimized :: <program>)
+    (program :: <program>, level :: <integer>)
+ => (optimized :: <program>)
   select (level)
     0
       => program;
