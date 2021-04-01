@@ -3,6 +3,9 @@ Synopsis: Brainfuck interpreter
 Author: Fernando Raya
 Copyright: GPLv3
 
+define constant <program-pointer> =
+  limited(<integer>, min: 0);
+
 define constant <program> =
   limited(<stretchy-vector>, of: <instruction>);
 

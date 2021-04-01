@@ -7,7 +7,7 @@ define constant <tape> =
   limited(<vector>, of: <byte>);
 
 define class <brainfuck> (<object>)
-  slot pp :: <integer>,
+  slot pp :: <program-pointer>,
     init-value: 0;
   constant slot program :: <program>,
     required-init-keyword: program:;
@@ -19,22 +19,25 @@ define class <brainfuck> (<object>)
 end class <brainfuck>;
 
 define method print-object
-  (bf :: <brainfuck>, stream :: <stream>) => ()
+    (bf :: <brainfuck>, stream :: <stream>)
+ => ()
   format(stream, "prog[%d] = '%=' ", bf.pp, bf.program[bf.pp]);
-  format(stream, "tape[%d] = '%='", bf.dp, bf.tape[bf.dp]);
+  format(stream, "tape[%d] = '%='", bf.dp, bf.tape[bf.dp])
 end method;
 
 define inline method finished?
-  (bf :: <brainfuck>) => (result :: <boolean>)
+    (bf :: <brainfuck>)
+ => (result :: <boolean>)
   bf.pp < 0 | bf.pp >= bf.program.size - 1
 end method finished?;
 
 define method run
-  (bf :: <brainfuck>) => ()
+    (bf :: <brainfuck>)
+ => ()
   while(~finished?(bf))
     execute(bf, bf.program[bf.pp]);
     bf.pp := bf.pp + 1;
-  end;
+  end
 end method run;
   
 define function main
