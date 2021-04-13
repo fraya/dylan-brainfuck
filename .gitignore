@@ -1,2 +1,4 @@
+*.hdp
+_build
 *~
-src/_build/*
+
