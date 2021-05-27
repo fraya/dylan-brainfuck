@@ -5,6 +5,7 @@ define library brainfuck
   use io;
   use system;
   use strings;
+  export brainfuck;
 end library brainfuck;
 
 define module brainfuck
@@ -27,5 +28,22 @@ define module brainfuck
     <program>,
     <tape>;
   export
+    <instruction>,
+    <comment>,
+    <tape-instruction>,
+    <increment-data>,
+    <decrement-data>,
+    <increment-pointer>,
+    <decrement-pointer>,
+    <jump>,
+    <jump-forward>,
+    <jump-backward>,
+    <precalculated-jump>,
+    <precalculated-jump-forward>,
+    <input>,
+    <output>;
+  export
+    read-program,
+    optimize-program,
     run;
 end module brainfuck;
