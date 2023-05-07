@@ -20,8 +20,12 @@ jobs:
 
       - uses: dylan-lang/install-opendylan@v3
 
+      - uses: dylan-lang/install-dylan-tool@v2
+
       - name: Build dylan-brainfuck-tests
-        run: dylan build brainfuck-tests
+        run: | 
+          dylan update
+          dylan build brainfuck-tests
 
       - name: Run dylan-brainfuck-tests
         run: _build/bin/dylan-brainfuck-tests
