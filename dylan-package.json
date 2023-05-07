@@ -1,0 +1,8 @@
+{
+    "dependencies": [  ],
+    "dev-dependencies": [ "testworks" ],
+    "description": "Brainfuck interpreter",
+    "name": "dylan-brainfuck",
+    "version": "0.1.0",
+    "url": "https://github.com/fraya/dylan-brainfuck"
+}

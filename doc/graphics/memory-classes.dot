@@ -1,0 +1,15 @@
+digraph G { 
+  node [
+    fontname="Helvetica,Arial,sans-serif"
+    shape=record
+    style=filled
+    fillcolor=gray95
+  ];
+
+  "<memory-instruction>" [
+    label="{\<memory-instruction\>|+ instruction-amount : \<integer\>}"
+  ];
+  "<instruction>" -> "<memory-instruction>";
+  "<memory-instruction>" -> "<memory-data-instruction>";
+  "<memory-instruction>" -> "<memory-pointer-instruction>";
+}
