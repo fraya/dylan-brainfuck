@@ -23,7 +23,7 @@ jobs:
       - name: Build dylan-brainfuck-tests
         run: | 
           dylan update
-          dylan build brainfuck-tests
+          dylan build brainfuck-test-suite
 
       - name: Run dylan-brainfuck-tests
         run: _build/bin/dylan-brainfuck-tests
