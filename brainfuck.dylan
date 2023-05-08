@@ -369,29 +369,6 @@ define function group-instructions
   optimized
 end function;
 
-// define constant $zero-pattern
-//   = brainfuck-program("[-]");
-
-// define constant $zero-instruction
-//   = brainfuck-program(list(make(<reset-to-zero>)));
-
-// define function reset-to-zero
-//     (program :: <program>) => (optimized :: <program>)
-//   local
-//     method replace (pattern, val, seq)
-//       let index = subsequence-position(seq, pattern, test: \=);
-//       if (~index)
-// 	seq
-//       else
-// 	replace(pattern,
-// 		val,
-// 		replace-subsequence!(seq, val, start: index, end: index + pattern.size))
-//       end if;
-//     end method;
-//   replace($zero-pattern, $zero-instruction, program);
-//   //brainfuck-program(result)
-// end function reset-to-zero;
-
 define function reset-to-zero
     (program :: <program>) => (optimized :: <program>)
   let pattern      = read-program("[-]");
@@ -564,3 +541,9 @@ define method \=
  => (equals? :: <boolean>)
   next-method() & this.jump-address = that.jump-address
 end;
+
+define method \=
+    (this :: <program>, that :: <program>)
+ => (equals? :: <boolean>)
+   next-method()
+ end;
