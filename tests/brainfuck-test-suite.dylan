@@ -43,10 +43,10 @@ end;
 
 define test test-reset-to-zero ()
   let program   = read-program("[-]");
-  let optimized = reset-to-zero(program); 
+  let optimized = reset-to-zero(program);
   let expected  = read-program(vector(make(<reset-to-zero>)));
-  assert-equal(expected, optimized);
-end;
+  assert-equal(expected, optimized, "Replace '[-]' with 'Z'");
+ end;
 
 define test test-group-instructions ()
   let program  = read-program("[[+++<<<>>>---]]");
