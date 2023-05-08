@@ -26,4 +26,4 @@ jobs:
           dylan build brainfuck-test-suite
 
       - name: Run dylan-brainfuck-tests
-        run: _build/bin/dylan-brainfuck-tests
+        run: _build/bin/brainfuck-test-suite
