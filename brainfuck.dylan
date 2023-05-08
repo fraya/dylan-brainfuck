@@ -194,12 +194,12 @@ define method run-brainfuck-program
   block ()
     while (program-not-finished?(interpreter))
       // format-out("%=\n", interpreter); force-out();
-      execute(current-instruction(interpreter), interpreter);
+      execute(interpreter.current-instruction, interpreter);
       program-forth(interpreter);
     end;
     interpreter
   exception (error :: <error>)
-    let instruction = current-instruction(interpreter);
+    let instruction = interpreter.current-instruction;
     signal(make(<brainfuck-error>, instruction: instruction));
   end block;
 end method run-brainfuck-program;
@@ -293,7 +293,7 @@ define method execute
     method find-address(bf)
       block (address)
 	let level = 1;
-	let jump  = current-instruction(bf);
+	let jump  = bf.current-instruction;
 	for (index from bf.program-pointer + 1 below bf.interpreter-program.size)
 	  select (object-class(instruction-at(bf, index)))
 	    <jump-forward>  => level := level + 1;
@@ -316,7 +316,7 @@ define method execute
     method find-address(bf)
       block (address)
 	let level = 1;
-	let jump  = current-instruction(bf);
+	let jump  = bf.current-instruction;
 	for (index from bf.program-pointer - 1 to 0 by -1)
 	  select (object-class(instruction-at(bf, index)))
 	    <jump-forward>  => level := level - 1;
@@ -456,7 +456,7 @@ define method print-object
   print-object(bf.interpreter-memory, s);
   format(s," PP:%03d '%='",
 	 bf.program-pointer,
-	 current-instruction(bf));
+	 bf.current-instruction);
 end;
 
 define method print-object
