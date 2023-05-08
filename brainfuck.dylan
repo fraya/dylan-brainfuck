@@ -47,7 +47,8 @@ define method current-instruction
 end;
 
 define method instruction-at
-    (interpreter :: <interpreter>, index :: <program-pointer>) => (instruction :: <instruction>)
+    (interpreter :: <interpreter>, index :: <program-pointer>)
+ => (instruction :: <instruction>)
   interpreter.interpreter-program[index]
 end;
 
@@ -69,8 +70,10 @@ end;
 ////////////////////////////////////////////////////////////////////////
 
 define abstract class <instruction> (<object>)
-  constant slot instruction-line   :: false-or(<integer>) = #f, init-keyword: line:;
-  constant slot instruction-column :: false-or(<integer>) = #f, init-keyword: column:;
+  constant slot instruction-line   :: false-or(<integer>) = #f,
+    init-keyword: line:;
+  constant slot instruction-column :: false-or(<integer>) = #f,
+    init-keyword: column:;
 end;
 
 define abstract class <memory-instruction> (<instruction>)
@@ -131,7 +134,8 @@ end;
 ////////////////////////////////////////////////////////////////////////
 
 define method parse-instruction
-    (char :: <character>, #key line = #f, column = #f) => (instruction :: <instruction>)
+    (char :: <character>, #key line = #f, column = #f)
+ => (instruction :: <instruction>)
   select (char)
     '>' => make(<memory-pointer-increment>, line: line, column: column);
     '<' => make(<memory-pointer-decrement>, line: line, column: column);
@@ -292,17 +296,17 @@ define method execute
   local
     method find-address(bf)
       block (address)
-	let level = 1;
-	let jump  = bf.current-instruction;
-	for (index from bf.program-pointer + 1 below bf.interpreter-program.size)
-	  select (object-class(instruction-at(bf, index)))
-	    <jump-forward>  => level := level + 1;
-	    <jump-backward> => level := level - 1;
-	    otherwise       => ;
-	  end select;
-	  if (level = 0) address(index) end;
-	end for;
-	signal(make(<brainfuck-error>, instruction: jump));
+    let level = 1;
+    let jump  = bf.current-instruction;
+    for (index from bf.program-pointer + 1 below bf.interpreter-program.size)
+      select (object-class(instruction-at(bf, index)))
+        <jump-forward>  => level := level + 1;
+        <jump-backward> => level := level - 1;
+        otherwise       => ;
+      end select;
+      if (level = 0) address(index) end;
+    end for;
+    signal(make(<brainfuck-error>, instruction: jump));
       end block;
     end method;
   when (bf.interpreter-memory.memory-item = 0)
@@ -315,17 +319,17 @@ define method execute
   local
     method find-address(bf)
       block (address)
-	let level = 1;
-	let jump  = bf.current-instruction;
-	for (index from bf.program-pointer - 1 to 0 by -1)
-	  select (object-class(instruction-at(bf, index)))
-	    <jump-forward>  => level := level - 1;
-	    <jump-backward> => level := level + 1;
-	    otherwise       => ;
-	  end select;
-	  if (level = 0) address(index) end;
-	end for;
-	error(make(<brainfuck-error>, instruction: jump));
+    let level = 1;
+    let jump  = bf.current-instruction;
+    for (index from bf.program-pointer - 1 to 0 by -1)
+      select (object-class(instruction-at(bf, index)))
+        <jump-forward>  => level := level - 1;
+        <jump-backward> => level := level + 1;
+        otherwise       => ;
+      end select;
+      if (level = 0) address(index) end;
+    end for;
+    error(make(<brainfuck-error>, instruction: jump));
       end block;
     end method;
   when (bf.interpreter-memory.memory-item ~= 0)
