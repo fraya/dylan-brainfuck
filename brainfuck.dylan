@@ -357,7 +357,7 @@ end;
 
 define method print-object
     (instruction :: <memory-pointer-instruction>, s :: <stream>) => ()
-  write-element(s, if (instruction.memory-amount) '>' else '<' end);
+  write-element(s, if (instruction.memory-amount > 0) '>' else '<' end);
   next-method();
 end;
 
@@ -397,7 +397,7 @@ end;
 
 define method print-object
     (comment :: <comment>, s :: <stream>) => ()
-  write-element(s, comment.comment-char)
+  write-element(s, '#')
 end;
 
 define method print-object

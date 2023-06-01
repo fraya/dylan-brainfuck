@@ -18,6 +18,24 @@ define test test-parse-instructions ()
   assert-instance?(<output>, as(<instruction>, '.'));
 end;
 
+define test test-print-instructions ()
+  let stream = make(<string-stream>, direction: #"output");
+  let i01 = make(<comment>);
+  let i02 = make(<memory-data-instruction>, amount: 2);
+  let i03 = make(<memory-data-instruction>, amount: -3);
+  let i04 = make(<memory-pointer-instruction>, amount: 4);
+  let i05 = make(<memory-pointer-instruction>, amount: -5);
+  let i06 = make(<jump-forward>);
+  let i07 = make(<jump-forward>, address: 6);
+  let i08 = make(<jump-backward>);
+  let i09 = make(<jump-backward>, address: 7);
+  let i10 = make(<input>);
+  let i11 = make(<output>);
+  format(stream, "%=%=%=%=%=%=%=%=%=%=%=", 
+                 i01, i02, i03, i04, i05, i06, i07, i08, i09, i10, i11); 
+  assert-equal("#+2-3>4<5[[6]]7,.", stream-contents(stream));
+end test;
+
 //////////////////////////////////////////////////////////////////////////////
 //
 // Remove comments tests
@@ -69,6 +87,7 @@ end;
 
 define suite brainfuck-test-suite ()
   test test-parse-instructions;
+  test test-print-instructions;
   test test-remove-comments;
   test test-reset-to-zero;
   test test-group-instructions;
