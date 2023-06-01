@@ -1,5 +1,5 @@
 Library: brainfuck
 Files: library.dylan
-       memory.dylan
+       classes.dylan
        brainfuck.dylan
 Target-Type: dll

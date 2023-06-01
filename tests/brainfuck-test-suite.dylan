@@ -7,15 +7,15 @@ Module: brainfuck-test-suite
 //////////////////////////////////////////////////////////////////////////////
 
 define test test-parse-instructions ()
-  assert-instance?(<comment>, parse-instruction('#'));
-  assert-instance?(<memory-data-increment>, parse-instruction('+'));
-  assert-instance?(<memory-data-decrement>, parse-instruction('-'));
-  assert-instance?(<memory-pointer-increment>, parse-instruction('>'));
-  assert-instance?(<memory-pointer-decrement>, parse-instruction('<'));
-  assert-instance?(<jump-forward>, parse-instruction('['));
-  assert-instance?(<jump-backward>, parse-instruction(']'));
-  assert-instance?(<input>, parse-instruction(','));
-  assert-instance?(<output>, parse-instruction('.'));
+  assert-instance?(<comment>, as(<instruction>, '#'));
+  assert-instance?(<memory-data-instruction>, as(<instruction>, '+'));
+  assert-instance?(<memory-data-instruction>, as(<instruction>, '-'));
+  assert-instance?(<memory-pointer-instruction>, as(<instruction>, '>'));
+  assert-instance?(<memory-pointer-instruction>, as(<instruction>, '<'));
+  assert-instance?(<jump-forward>, as(<instruction>, '['));
+  assert-instance?(<jump-backward>, as(<instruction>, ']'));
+  assert-instance?(<input>, as(<instruction>, ','));
+  assert-instance?(<output>, as(<instruction>, '.'));
 end;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -53,10 +53,9 @@ define test test-group-instructions ()
   let expected = make(<program>);
   add!(expected, make(<jump-forward>));
   add!(expected, make(<jump-forward>));
-  add!(expected, make(<memory-data-increment>, amount: 3));
-  add!(expected, make(<memory-pointer-decrement>, amount: 3));
-  add!(expected, make(<memory-pointer-increment>, amount: 3));
-  add!(expected, make(<memory-data-decrement>, amount: 3));
+  add!(expected, make(<memory-data-instruction>, amount: 3));
+  add!(expected, make(<memory-pointer-instruction>, amount: 0));
+  add!(expected, make(<memory-data-instruction>, amount: -3));
   add!(expected, make(<jump-backward>));
   add!(expected, make(<jump-backward>));
   assert-equal(expected, group-instructions(program));			    

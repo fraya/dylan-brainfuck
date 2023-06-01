@@ -31,9 +31,7 @@ define module brainfuck
   // Instructions
   
   create
-    <instruction>,
-    instruction-line,
-    instruction-column;
+    <instruction>;
 
   // Program
   
@@ -47,61 +45,49 @@ define module brainfuck
     <interpreter>,
     program-pointer;
   
-
-
 end module;
 
 define module brainfuck-impl
   use common-dylan;
-  use common-extensions;
   use byte-vector;
   use file-system;
   use format;
   use format-out;
   use locators;
   use print;
+  use standard-io;
   use streams;
   use brainfuck;
 
-  // Instruction
-  export
-    parse-instruction;
-  
   // Memory
   
   export
     $memory-size,
-    <memory-cell>,
-    <memory-cells>,
     <memory-pointer>,
     memory-increment,
-    memory-decrement,
-    memory-forth,
-    memory-back;
+    memory-forth;
 
   // Memory instructions 
   
   export
     <memory-instruction>,
-    instruction-amount,
+    memory-amount,
+    memory-amount-setter,
     <memory-data-instruction>,
-    <memory-data-increment>,
-    <memory-data-decrement>,
     <memory-pointer-instruction>,
-    <memory-pointer-increment>,
-    <memory-pointer-decrement>,
     <reset-to-zero>;
 
   // Program exports
   
   export
     current-instruction,
-    instruction-at,
     program-not-finished?,
-    program-forth;
+    program-at,
+    program-forth,
+    program-back;
   
   // Jumps
-  
+ 
   export
     <jump-instruction>,
     <jump-forward>,
@@ -113,8 +99,7 @@ define module brainfuck-impl
     <output>;
 
   export
-    <comment>,
-    <reset-to-zero>;
+    <comment>;
 
   export
     execute,

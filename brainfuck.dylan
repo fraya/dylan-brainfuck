@@ -3,30 +3,17 @@ Synopsis: Brainfuck core
 Author: Fernando Raya
 Copyright: GPLv3
 
-////////////////////////////////////////////////////////////////////////
-//
-// Errors 
-//
-////////////////////////////////////////////////////////////////////////
+define constant $memory-size
+  = 30000;
 
+define constant <memory-pointer>
+  = limited(<integer>);
 
-define class <brainfuck-error> (<error>)
-  constant slot error-instruction :: <instruction>,
-    init-keyword: instruction:;
-end;
-
-define class <mismatch-jump-error> (<brainfuck-error>)
-end;
-  
-
-////////////////////////////////////////////////////////////////////////
-//
-// Program
-//
-////////////////////////////////////////////////////////////////////////
+define constant <memory>
+  = limited(<vector>, of: <integer>, size: $memory-size);
 
 define constant <program-pointer>
-  = limited(<integer>);
+  = limited(<integer>, min: 0);
 
 define constant <program>
   = limited(<stretchy-vector>, of: <instruction>);
@@ -34,119 +21,81 @@ define constant <program>
 define class <interpreter> (<object>)
   slot program-pointer :: <program-pointer> = 0,
     init-keyword: program-pointer:;
-  constant slot interpreter-program :: <program>,
+  slot memory-pointer :: <memory-pointer> = 0,
+    init-keyword: memory-pointer:;
+  slot interpreter-program :: <program>,
+    setter: #f,
     required-init-keyword: program:;
-  constant slot interpreter-memory :: <memory> = make(<memory>, fill: 0),
+  slot interpreter-memory :: <memory> = make(<memory>, fill: 0),
+    setter: #f,
     init-keyword: memory:;
-  constant virtual slot current-instruction :: <instruction>;
-end;
+  slot interpreter-output-stream :: <stream> = *standard-output*,
+    setter: #f,
+    init-keyword: output-stream:;
+  virtual slot current-instruction :: <instruction>,
+    setter: #f;
+  virtual slot memory-item :: <integer>;
+end class <interpreter>;
 
 define method current-instruction
-    (interpreter :: <interpreter>) => (instruction :: <instruction>)
-  interpreter.interpreter-program[interpreter.program-pointer]
+    (bf :: <interpreter>) => (instruction :: <instruction>)
+  bf.interpreter-program[bf.program-pointer]
 end;
 
-define method instruction-at
-    (interpreter :: <interpreter>, index :: <program-pointer>)
- => (instruction :: <instruction>)
-  interpreter.interpreter-program[index]
+define inline method program-at
+    (bf :: <interpreter>, index :: <program-pointer>) => (instruction :: <instruction>)
+  bf.interpreter-program[index]
 end;
 
-define inline method program-not-finished?
-    (interpreter :: <interpreter>) => (finished? :: <boolean>)
-  interpreter.program-pointer < interpreter.interpreter-program.size
+define inline function program-not-finished?
+    (bf :: <interpreter>) => (finished? :: <boolean>)
+  bf.program-pointer < bf.interpreter-program.size
 end;
 
-define inline method program-forth
-    (interpreter :: <interpreter>) => (address :: <program-pointer>)
-  interpreter.program-pointer := interpreter.program-pointer + 1
+define inline function program-forth
+    (bf :: <interpreter>) => (address :: <program-pointer>)
+  bf.program-pointer := bf.program-pointer + 1
 end;
 
-
-////////////////////////////////////////////////////////////////////////
-//
-// Instructions
-//
-////////////////////////////////////////////////////////////////////////
-
-define abstract class <instruction> (<object>)
-  constant slot instruction-line   :: false-or(<integer>) = #f,
-    init-keyword: line:;
-  constant slot instruction-column :: false-or(<integer>) = #f,
-    init-keyword: column:;
+define inline function program-back
+    (bf :: <interpreter>) => (address :: <program-pointer>)
+  bf.program-pointer := bf.program-pointer - 1
 end;
 
-define abstract class <memory-instruction> (<instruction>)
-  slot instruction-amount :: <integer> = 1,
-    init-keyword: amount:;
+define method memory-item
+    (bf :: <interpreter>) => (cell :: <integer>)
+  bf.interpreter-memory[bf.memory-pointer]
 end;
 
-define abstract class <memory-data-instruction> (<memory-instruction>)
+define method memory-item-setter
+    (value :: <integer>, bf :: <interpreter>) => (cell :: <integer>)
+  bf.interpreter-memory[bf.memory-pointer] := value
 end;
 
-define abstract class <memory-pointer-instruction> (<memory-instruction>)
+define inline method memory-increment
+    (bf :: <interpreter>, amount :: <integer>) => (cell :: <integer>)
+  bf.memory-item := bf.memory-item + amount
 end;
 
-define class <memory-data-increment> (<memory-data-instruction>)
+define inline method memory-forth
+    (bf :: <interpreter>, amount :: <memory-pointer>) => (pointer :: <memory-pointer>)
+  bf.memory-pointer := bf.memory-pointer + amount
 end;
 
-define class <memory-data-decrement> (<memory-data-instruction>)
-end;
-
-define class <memory-pointer-increment> (<memory-pointer-instruction>)
-end;
-
-define class <memory-pointer-decrement> (<memory-pointer-instruction>)
-end;
-
-define class <reset-to-zero> (<memory-data-instruction>)
-end;
-
-define abstract class <jump-instruction> (<instruction>)
-  slot jump-address :: false-or(<program-pointer>) = #f,
-    init-keyword: address:;
-end;
-
-define class <jump-forward>  (<jump-instruction>)
-end;
-
-define class <jump-backward> (<jump-instruction>)
-end;
-
-define abstract class <io-instruction> (<instruction>)
-end;
-
-define class <input> (<io-instruction>)
-end;
-
-define class <output> (<io-instruction>)
-end;
-
-define class <comment> (<instruction>)
-  constant slot comment-char :: <character>,
-    init-keyword: char:;
-end;
-
-////////////////////////////////////////////////////////////////////////
-//
-// Parse instructions
-//
-////////////////////////////////////////////////////////////////////////
-
-define method parse-instruction
-    (char :: <character>, #key line = #f, column = #f)
+define method as
+    (type == <instruction>, char :: <character>)
  => (instruction :: <instruction>)
   select (char)
-    '>' => make(<memory-pointer-increment>, line: line, column: column);
-    '<' => make(<memory-pointer-decrement>, line: line, column: column);
-    '+' => make(<memory-data-increment>, line: line, column: column);
-    '-' => make(<memory-data-decrement>, line: line, column: column);
-    '.' => make(<output>, line: line, column: column);
-    ',' => make(<input>, line: line, column: column);
-    '[' => make(<jump-forward>, line: line, column: column);
-    ']' => make(<jump-backward>, line: line, column: column);
+    '>' => make(<memory-pointer-instruction>, amount: 1);
+    '<' => make(<memory-pointer-instruction>, amount: - 1);
+    '+' => make(<memory-data-instruction>, amount: 1);
+    '-' => make(<memory-data-instruction>, amount: - 1);
+    '.' => make(<output>);
+    ',' => make(<input>);
+    '[' => make(<jump-forward>);
+    ']' => make(<jump-backward>);
     otherwise
-      => make(<comment>, char: char, line: line, column: column);
+      => make(<comment>, char: char);
   end select;
 end;
 
@@ -162,17 +111,10 @@ define generic read-program
 define method read-program
     (stream :: <stream>) => (program :: <program>)
   let program = make(<program>);
-  let line   = 0;
-  let column = 0;
   while (~stream-at-end?(stream))
     let char = as(<character>, read-element(stream));
-    if (char = '\n')
-      column := 0; line := line + 1;
-    else
-      column := column + 1;
-    end;
-    add!(program, parse-instruction(char, line: line, column: column));
-  end;
+    add!(program, as(<instruction>, char))
+  end while;
   program
 end method read-program;
 
@@ -185,7 +127,7 @@ end;
 
 define method read-program
     (string :: <string>) => (program :: <program>)
-  map-as(<program>, parse-instruction, string)
+  map-as(<program>, curry(as, <instruction>), string)
 end;
 
 define method read-program
@@ -194,25 +136,20 @@ define method read-program
 end;
 
 define method run-brainfuck-program
-    (interpreter :: <interpreter>) => (bf :: <interpreter>)
+    (program :: <program>) => ()
+  let bf = make(<interpreter>, program: program);
   block ()
-    while (program-not-finished?(interpreter))
-      // format-out("%=\n", interpreter); force-out();
-      execute(interpreter.current-instruction, interpreter);
-      program-forth(interpreter);
+    while (program-not-finished?(bf))
+      //format-out("%=\n", bf); force-out();
+      execute(bf.current-instruction, bf);
+      program-forth(bf);
     end;
-    interpreter
   exception (error :: <error>)
-    let instruction = interpreter.current-instruction;
+    let instruction = bf.current-instruction;
     signal(make(<brainfuck-error>, instruction: instruction));
   end block;
 end method run-brainfuck-program;
 
-define method run-brainfuck-program
-    (program :: <program>) => (bf :: <interpreter>)
-  let interpreter = make(<interpreter>, program: program);
-  run-brainfuck-program(interpreter)
-end;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -223,57 +160,23 @@ end;
 define generic execute
   (instruction :: <instruction>, bf :: <interpreter>) => ();
 
-// define method execute
-//     (bf :: <interpreter>, instruction :: <instruction>) => ()
-//   select (object-class(instruction))
-//     <memory-data-increment> =>
-//       memory-increment(bf, instruction.instruction-amount);
-//     <memory-data-decrement> =>
-//       memory-decrement(bf, instruction.instruction-amount);
-//     <memory-pointer-increment> =>
-//       memory-forth(bf, instruction.instruction-amount);
-//     <memory-pointer-decrement> => 
-//       memory-back(bf, instruction.instruction-amount);
-//     <output> =>
-//       format-out("%c", as(<character>, bf.memory-item));
-//       force-out();
-//     <reset-to-zero> => 
-//       bf.memory[bf.memory-pointer] := 0;
-//     <comment> =>
-//       ;
-//     otherwise =>
-//       error("Unknown instruction");
-//   end select;
-// end method execute;
-
 define method execute
-    (instruction :: <memory-data-increment>, bf :: <interpreter>)
+    (instruction :: <memory-data-instruction>, bf :: <interpreter>)
  => ()
-  memory-increment(bf.interpreter-memory, instruction.instruction-amount)
+  memory-increment(bf, instruction.memory-amount)
 end;
 
 define method execute
-    (instruction :: <memory-data-decrement>, bf :: <interpreter>)
+    (instruction :: <memory-pointer-instruction>, bf :: <interpreter>)
  => ()
-  memory-decrement(bf.interpreter-memory, instruction.instruction-amount)
-end;
-
-define method execute
-    (instruction :: <memory-pointer-increment>, bf :: <interpreter>)
- => ()
-  memory-forth(bf.interpreter-memory, instruction.instruction-amount)
-end;
-
-define method execute
-    (instruction :: <memory-pointer-decrement>, bf :: <interpreter>)
- => ()
-  memory-back(bf.interpreter-memory, instruction.instruction-amount);
+  memory-forth(bf, instruction.memory-amount)
 end;
 
 define method execute
     (instruction :: <output>, bf :: <interpreter>) => ()
-  format-out("%c", as(<character>, bf.interpreter-memory.memory-item));
-  force-out();
+  format(bf.interpreter-output-stream,
+	 "%c", as(<character>, bf.memory-item));
+  force-out()
 end;
 
 define method execute
@@ -288,53 +191,51 @@ end;
 
 define method execute
     (instruction :: <reset-to-zero>, bf :: <interpreter>) => ()
-  bf.interpreter-memory.memory-item := 0
+  bf.memory-item := 0
 end;
 
 define method execute
     (jump :: <jump-forward>, bf :: <interpreter>) => ()
   local
-    method find-address(bf)
-      block (address)
-    let level = 1;
-    let jump  = bf.current-instruction;
-    for (index from bf.program-pointer + 1 below bf.interpreter-program.size)
-      select (object-class(instruction-at(bf, index)))
-        <jump-forward>  => level := level + 1;
-        <jump-backward> => level := level - 1;
-        otherwise       => ;
-      end select;
-      if (level = 0) address(index) end;
-    end for;
-    signal(make(<brainfuck-error>, instruction: jump));
+    method find-jump-backward(bf)
+      block (addr)
+	let level = 1;
+	for (index from bf.program-pointer + 1 below bf.interpreter-program.size)
+	  select (object-class(program-at(bf, index)))
+	    <jump-forward>  => level := level + 1;
+	    <jump-backward> => level := level - 1;
+	    otherwise       => ;
+	  end select;
+	  when (level = 0) addr(index) end
+	end for;
+	error(make(<brainfuck-error>, instruction: bf.current-instruction))
       end block;
     end method;
-  when (bf.interpreter-memory.memory-item = 0)
-    bf.program-pointer := jump.jump-address | find-address(bf)
-  end;
+  when (bf.memory-item = 0)
+    bf.program-pointer := jump.jump-address | find-jump-backward(bf)
+  end when;
 end execute;
 
 define method execute
     (jump :: <jump-backward>, bf :: <interpreter>) => ()
   local
-    method find-address(bf)
-      block (address)
-    let level = 1;
-    let jump  = bf.current-instruction;
-    for (index from bf.program-pointer - 1 to 0 by -1)
-      select (object-class(instruction-at(bf, index)))
-        <jump-forward>  => level := level - 1;
-        <jump-backward> => level := level + 1;
-        otherwise       => ;
-      end select;
-      if (level = 0) address(index) end;
-    end for;
-    error(make(<brainfuck-error>, instruction: jump));
+    method find-jump-forward(bf)
+      block (addr)
+	let level = 1;
+	for (index from bf.program-pointer - 1 to 0 by -1)
+	  select (object-class(program-at(bf, index)))
+	    <jump-forward>  => level := level - 1;
+	    <jump-backward> => level := level + 1;
+	    otherwise       => ;
+	  end select;
+	  when (level = 0) addr(index) end
+	end for;
+	error(make(<brainfuck-error>, instruction: bf.current-instruction))
       end block;
     end method;
-  when (bf.interpreter-memory.memory-item ~= 0)
-    bf.program-pointer := jump.jump-address | find-address(bf)
-  end;
+  when (bf.memory-item ~= 0)
+    bf.program-pointer := jump.jump-address | find-jump-forward(bf)
+  end when;
 end execute;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -355,12 +256,12 @@ define function group-instructions
       instance?(x, <memory-instruction>) & object-class(x) = object-class(y)
     end method;
   let optimized = make(<program>);
-  let stream    = make(<sequence-stream>, contents: program, direction: #"input");
+  let stream    = make(<sequence-stream>, contents: program);
   while (~stream-at-end?(stream))
     let current = read-element(stream);
     let next    = peek(stream, on-end-of-stream: #f);
     while (next & optimizable?(current, next))
-      current.instruction-amount := current.instruction-amount + 1;
+      current.memory-amount := current.memory-amount + next.memory-amount;
       read-element(stream);
       next := peek(stream, on-end-of-stream: #f);
     end while;
@@ -417,7 +318,7 @@ define function optimize-program
   let o3 = compose(reset-to-zero, o2);
   let o4 = compose(precalculate-jumps, o3);
   select (level)
-    0 => program;
+    0 => program;      
     1 => o1(program);
     2 => o2(program);
     3 => o3(program);
@@ -434,40 +335,29 @@ end function optimize-program;
 
 define method print-object
     (bf :: <interpreter>, s :: <stream>) => ()
-  print-object(bf.interpreter-memory, s);
-  format(s," PP:%03d '%='",
+  format(s,"PP[%d]='%=' DP[%d]=%d\n",
 	 bf.program-pointer,
-	 bf.current-instruction);
+	 bf.current-instruction,
+	 bf.memory-pointer,
+	 bf.memory-item)
 end;
 
 define method print-object
     (instruction :: <memory-instruction>, s :: <stream>) => ()
-  unless (instruction.instruction-amount == 1) 
-    write(s, integer-to-string(instruction.instruction-amount)) 
-  end
+  unless (abs(instruction.memory-amount) = 1)
+    write(s, integer-to-string(abs(instruction.memory-amount)))
+  end;
 end;
 
 define method print-object
-    (instruction :: <memory-data-increment>, s :: <stream>) => ()
-  write-element(s, '+');
+    (instruction :: <memory-data-instruction>, s :: <stream>) => ()
+  write-element(s, if (instruction.memory-amount > 0) '+' else '-' end);
   next-method();
 end;
 
 define method print-object
-    (instruction :: <memory-data-decrement>, s :: <stream>) => ()
-  write-element(s, '-');
-  next-method();
-end;
-
-define method print-object
-    (instruction :: <memory-pointer-increment>, s :: <stream>) => ()
-  write-element(s, '>');
-  next-method();
-end;
-
-define method print-object
-    (instruction :: <memory-pointer-decrement>, s :: <stream>) => ()
-  write-element(s, '<');
+    (instruction :: <memory-pointer-instruction>, s :: <stream>) => ()
+  write-element(s, if (instruction.memory-amount) '>' else '<' end);
   next-method();
 end;
 
@@ -530,10 +420,10 @@ define method \=
 end;
 
 define method \=
-    (this :: <memory-data-instruction>, that :: <memory-data-instruction>)
+    (this :: <memory-instruction>, that :: <memory-instruction>)
  => (equals? :: <boolean>)
       object-class(this) = object-class(that)
-    & this.instruction-amount = that.instruction-amount
+    & this.memory-amount = that.memory-amount
 end;
 
 define method \=
@@ -546,4 +436,4 @@ define method \=
     (this :: <program>, that :: <program>)
  => (equals? :: <boolean>)
    next-method()
- end;
+end;

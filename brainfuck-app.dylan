@@ -23,7 +23,7 @@ define function main
     format-out("\t0: No optimization\n");
     format-out("\t1: Remove comments\n");
     format-out("\t2: Level 1 and group instructions\n");
-    format-out("\t3: Level 2 and replace pattern [-] with reset to zero\n");    
+    format-out("\t3: Level 2 and replace pattern [-] with reset to zero\n");
     format-out("\t4: Level 3 and precalculate jumps (default)\n");
     exit-application(1);
   end if;
@@ -42,12 +42,10 @@ define function main
 
     run(program-name, optimization-level);
     format-out("\n");
+    force-out();
   exception (error :: <brainfuck-error>)
     let instruction = error.error-instruction;
-    format-out("\n%d:%d: Error executing instruction '%='\n",
-	       instruction.instruction-line,
-	       instruction.instruction-column,
-	       instruction);
+    format-out("\nError executing instruction '%='\n", instruction);
     exit-application(2);
   end;
 end function main;
