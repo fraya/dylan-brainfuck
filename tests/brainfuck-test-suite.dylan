@@ -20,7 +20,7 @@ end;
 
 define test test-print-instructions ()
   let stream = make(<string-stream>, direction: #"output");
-  let i01 = make(<comment>);
+  let i01 = make(<comment>, char: '#');
   let i02 = make(<memory-data-instruction>, amount: 2);
   let i03 = make(<memory-data-instruction>, amount: -3);
   let i04 = make(<memory-pointer-instruction>, amount: 4);

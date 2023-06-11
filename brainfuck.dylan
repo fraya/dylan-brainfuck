@@ -397,7 +397,7 @@ end;
 
 define method print-object
     (comment :: <comment>, s :: <stream>) => ()
-  write-element(s, '#')
+  write-element(s, comment.comment-char)
 end;
 
 define method print-object
