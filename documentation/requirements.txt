@@ -1,0 +1,2 @@
+# Furo theme dependency to build docs with sphinx in GH Actions
+furo

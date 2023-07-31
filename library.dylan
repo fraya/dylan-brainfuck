@@ -57,7 +57,10 @@ define module brainfuck-impl
   use print;
   use standard-io;
   use streams;
+  
   use brainfuck;
+
+  // Additional exports for use by test suite.
 
   // Memory
   
@@ -92,14 +95,19 @@ define module brainfuck-impl
     <jump-instruction>,
     <jump-forward>,
     <jump-backward>;
+
+  // IO instructions
   
   export
     <io-instruction>,
     <input>,
     <output>;
 
+  // Miscelaneous instructions
+
   export
-    <comment>;
+    <comment>,
+    <reset-to-zero>;
 
   export
     execute,
