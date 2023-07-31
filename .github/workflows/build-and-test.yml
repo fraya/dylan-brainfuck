@@ -3,10 +3,14 @@ name: build-and-test
 on:
   push:
     # all branches
+    paths-ignore:
+      - 'documentation/**'
   pull_request:
     branches:
       - main
       - master
+    paths-ignore:
+      - 'documentation/**'
 
   # This enables the Run Workflow button on the Actions tab.
   workflow_dispatch:
@@ -18,12 +22,41 @@ jobs:
     
       - uses: actions/checkout@v3
 
-      - uses: dylan-lang/install-dylan-tool@v2
+      - name: Add OD to PATH
+        run: |
+          echo "/home/runner/work/dylan-brainfuck/opendylan-2023.1/bin" >> $GITHUB_PATH
 
-      - name: Build dylan-brainfuck-tests
-        run: | 
-          dylan update
-          dylan build brainfuck-test-suite
+      - name: Cache OD 2023.1
+        id: cache-2023-1
+        uses: actions/cache@v3
+        with:
+          path: |
+            /home/runner/work/dylan-brainfuck/opendylan-2023.1
+          key: ${{ runner.os }}-2023-1
 
-      - name: Run dylan-brainfuck-tests
+      - name: Cache packages
+        id: cache-packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./_packages
+            ./registry
+          key: ${{ runner.os }}-${{ hashFiles('**/dylan-package.json') }}
+
+      - name: Install Opendylan
+        if: steps.cache-2023-1.outputs.cache-hit != 'true'
+        uses: dylan-lang/install-opendylan@v3
+        with:
+          version: 2023.1
+          tag: v2023.1.0
+
+      - name: Download dependencies
+        if: steps.cache-packages.outputs.cache-hit != 'true'
+        run: dylan update
+
+      - name: Build tests
+        run: dylan build brainfuck-test-suite
+
+      - name: Run tests
         run: _build/bin/brainfuck-test-suite
+

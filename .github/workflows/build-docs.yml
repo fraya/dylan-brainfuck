@@ -1,0 +1,47 @@
+name: build-docs
+
+on:
+  push:
+    # all branches
+    paths:
+      - 'documentation/**'
+  pull_request:
+    # all branches
+    paths:
+      - 'documentation/**'
+
+  # This enables the Run Workflow button on the Actions tab.
+  workflow_dispatch:
+
+# Set DYLAN environment variable to GITHUB_WORKSPACE so packages are
+# installed in ../../_packages relative to documentation's Makefile
+env:
+  DYLAN: ${{ github.workspace }}
+
+jobs:
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - name: Install Open Dylan
+        uses: dylan-lang/install-opendylan@v3
+        with:
+          version: 2023.1
+          tag: v2023.1.0
+
+      - name: Install sphinx-extensions dependencies
+        run: |
+          dylan update
+
+      - name: Build docs
+        uses: ammaraskar/sphinx-action@master
+        with:
+          docs-folder: "documentation/"
+
+      - name: Deploy documents to GH pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: documentation/build/html
