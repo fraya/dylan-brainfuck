@@ -23,17 +23,13 @@ define class <interpreter> (<object>)
     init-keyword: program-pointer:;
   slot memory-pointer :: <memory-pointer> = 0,
     init-keyword: memory-pointer:;
-  slot interpreter-program :: <program>,
-    setter: #f,
+  constant slot interpreter-program :: <program>,
     required-init-keyword: program:;
-  slot interpreter-memory :: <memory> = make(<memory>, fill: 0),
-    setter: #f,
+  constant slot interpreter-memory :: <memory> = make(<memory>, fill: 0),
     init-keyword: memory:;
-  slot interpreter-output-stream :: <stream> = *standard-output*,
-    setter: #f,
+  constant slot interpreter-output-stream :: <stream> = *standard-output*,
     init-keyword: output-stream:;
-  virtual slot current-instruction :: <instruction>,
-    setter: #f;
+  constant virtual slot current-instruction :: <instruction>;
   virtual slot memory-item :: <integer>;
 end class <interpreter>;
 
