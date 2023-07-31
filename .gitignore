@@ -1,3 +1,5 @@
 *~
-_build
 *.hdp
+_build/
+_packages/
+registry/
