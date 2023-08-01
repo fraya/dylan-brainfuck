@@ -10,17 +10,35 @@ How it works
 ============
 
 The interpreter parses the source code and transform it to
-`<instruction>` classes. Every character is a comment except `<`, `>`,
-`+`, `-`, `.`, `[`, and `]` that are instructions.
+``<instruction>`` classes. Every character is a comment except ``<``,
+``>``, ``+``, ``-``, ``.``, ``[``, and ``]`` that are instructions.
 
 After that the program is optimized and interpreted.
+
+Building
+========
+
+#. Download the code from https://github.com/fraya/dylan-brainfuck
+
+#. Enter in the ``dylan-brainfuck`` directory.
+
+#. Update packages dependencies
+
+   dylan update
+
+#. Compile
+
+   dylan build brainfuck-app
+
+#. The executable should be (depending on your Open Dylan
+   configuration) in the folder ``_build/bin``
 
 Running a program
 =================
 
-To execute a brainfuck program called `hello.bf` use:
+To execute a brainfuck program called ``bench.b`` use:
 
-  dylan-brainfuck hello.bf
+   brainfuck-app bench.b
   
 Optimization
 ============
@@ -34,55 +52,55 @@ By default every program is optimized as follows:
 4. Precalculate jumps.
 
 The optimization is controlled by the 'optimize' option followed by a
-number between '0' and '3'. Every optimization includes the
-optimizations with a number smaller than the number passed. For
-instance, an optimization of '2' (group instructions) includes the
-optimization '1' (remove comments).
+number. Every optimization includes the optimizations with a number
+smaller than the number passed. For instance, an optimization of ``2``
+(group instructions) includes the optimization ``1`` (remove comments).
 
-  dylan-brainfuck -O 2 hello.bf
+    dylan-brainfuck hello.bf <optimization>
 
 Remove comments
 ---------------
 
 All characters from source code are transformed in objects of the
-class `<comment>`. Even this class does nothing when executed, we can
+class ``<comment>``. Even this class does nothing when executed, we can
 save time removing it.
 
 Group optimization
 ------------------
 
 A group of instructions of the same type are grouped in one. For
-instance, a group of three `<memory-data-instruction>`, '+++', is
-optimized as one '3+'. The group of instructions are subclasses of
-`<memory-instruction>`: `<memory-data-instruction>` and
-`<memory-pointer-instruction>`.
+instance, a group of three ``<memory-data-instruction>`` (``+++``) is
+optimized as one ``3+``. The group of instructions are subclasses of
+``<memory-instruction>``: ``<memory-data-instruction>`` and
+``<memory-pointer-instruction>``.
 
 Reset to zero
 -------------
 
-When a pattern like `[-]` is found, it is replaced by an instruction
-`<reset-to-zero>` that puts the memory item to 0.
+When a pattern like ``[-]`` is found, it is replaced by an instruction
+``<reset-to-zero>`` that puts the memory item to 0.
 
 Precalculate jumps
 ------------------
 
-When an instruction `JumpForward` is executed, it must move to the
-pair `JumpBackward` instruction. This process can be faster if we
-precalculate the jump ahead. Every `JumpForward` is changed with a
-`PrecalculatedJumpForward` with a fix instruction address. At the same
-time the `JumpBackward` instruction is removed and changed for a
-`PrecalculatedJumbBackward`.
+When an instruction ``<jump-forward>`` is executed, it must move one
+instruction at the time looking for to the pair ``<jump-backward>``
+instruction. This process can be faster if we precalculate the jump
+ahead. Every ``<jump-forward>`` is assigned with a address number that
+points to the pair ``<jump-backward>`` and viceversa.
 
 Examples
 ========
 
-In folder the 'res/' there are some brainfuck programs. I'm sorry I
+In folder the ``examples`` there are some brainfuck programs. I'm sorry I
 don't remember the source of all of them. There are more examples in
-`http://esoteric.sange.fi/brainfuck/bf-source/prog/`
+http://esoteric.sange.fi/brainfuck/bf-source/prog/
 
+Design notes
+============
 
 Library structure and dependencies
-==================================
+----------------------------------
 
 The libraries used by the project are shown with the modules inside.
 The arrows between the modules are the dependencies.
@@ -135,9 +153,50 @@ The arrows between the modules are the dependencies.
 	   "standard-io";
 	 };	 
 
-	 "dylan-nbody-impl" -> streams        [ltail=cluster_dbf, lhead=cluster_io];
-	 "dylan-nbody-impl" -> "common-dylan" [ltail=cluster_dbf, lhead=cluster_cd];
+	 "dylan-brainfuck-impl" -> streams        [ltail=cluster_dbf, lhead=cluster_io];
+	 "dylan-brainfuck-impl" -> "common-dylan" [ltail=cluster_dbf, lhead=cluster_cd];
+	 "dylan-brainfuck-impl" -> "locators"     [ltail=cluster_dbf, lhead=cluster_system];
     }
+
+Instructions' class diagram
+---------------------------
+
+.. graphviz::
+
+   digraph G { 
+     bgcolor  = "#00000000";
+     ranksep  = 1.0;
+     graph [compound=true];
+     node [
+       fontname="Helvetica,Arial,sans-serif"
+       shape=record
+     ];
+  
+     "<instruction>"                [ label="\<instruction\>\na" ];
+     "<memory-instruction>"         [ label="\<memory-instruction\>\na" ];
+     "<memory-data-instruction>"    [ label="\<memory-data-instruction\>\nci" ];
+     "<memory-pointer-instruction>" [ label="\<memory-pointer-instruction\>\nci" ];
+     "<jump-instruction>"           [ label="\<jump-instruction\>\na" ];
+     "<io-instruction>"             [ label="\<io-instruction\>\na" ];
+     "<reset-to-zero>"              [ label="\<reset-to-zero\>\nci" ];
+     "<jump-forward>"               [ label="\<jump-forward\>\nci" ];
+     "<jump-backward>"              [ label="\<jump-backward\>\nci" ];
+     "<input>"                      [ label="\<input\>\nci" ];
+     "<output>"                     [ label="\<output\>\nci" ];
+     "<comment>"                    [ label="\<comment\>\nci" ];
+  
+     "<instruction>" -> "<memory-instruction>";
+     "<instruction>" -> "<jump-instruction>";
+     "<instruction>" -> "<io-instruction>";
+     "<instruction>" -> "<comment>";
+     "<memory-instruction>" -> "<memory-data-instruction>";
+     "<memory-instruction>" -> "<memory-pointer-instruction>";
+     "<memory-instruction>" -> "<reset-to-zero>";
+     "<jump-instruction>" -> "<jump-forward>";
+     "<jump-instruction>" -> "<jump-backward>";
+     "<io-instruction>" -> "<input>";
+     "<io-instruction>" -> "<output>";
+   }
 
 .. toctree::
    :maxdepth: 2
