@@ -337,40 +337,45 @@ The arrows between the modules are the dependencies.</p>
 </section>
 <section id="instructions-class-diagram">
 <h3>Instructions’ class diagram<a class="headerlink" href="#instructions-class-diagram" title="Permalink to this heading">#</a></h3>
-<div class="graphviz"><img src="_images/graphviz-8c4e795e44eaa951673dd23f5da9c9facdf75cba.png" alt="digraph G {
-  bgcolor  = &quot;#00000000&quot;;
-  ranksep  = 1.0;
-  graph [compound=true];
-  node [
-    fontname=&quot;Helvetica,Arial,sans-serif&quot;
-    shape=record
-  ];
-
-  &quot;&lt;instruction&gt;&quot;                [ label=&quot;\&lt;instruction\&gt;\na&quot; ];
-  &quot;&lt;memory-instruction&gt;&quot;         [ label=&quot;\&lt;memory-instruction\&gt;\na&quot; ];
-  &quot;&lt;memory-data-instruction&gt;&quot;    [ label=&quot;\&lt;memory-data-instruction\&gt;\nci&quot; ];
-  &quot;&lt;memory-pointer-instruction&gt;&quot; [ label=&quot;\&lt;memory-pointer-instruction\&gt;\nci&quot; ];
-  &quot;&lt;jump-instruction&gt;&quot;           [ label=&quot;\&lt;jump-instruction\&gt;\na&quot; ];
-  &quot;&lt;io-instruction&gt;&quot;             [ label=&quot;\&lt;io-instruction\&gt;\na&quot; ];
-  &quot;&lt;reset-to-zero&gt;&quot;              [ label=&quot;\&lt;reset-to-zero\&gt;\nci&quot; ];
-  &quot;&lt;jump-forward&gt;&quot;               [ label=&quot;\&lt;jump-forward\&gt;\nci&quot; ];
-  &quot;&lt;jump-backward&gt;&quot;              [ label=&quot;\&lt;jump-backward\&gt;\nci&quot; ];
-  &quot;&lt;input&gt;&quot;                      [ label=&quot;\&lt;input\&gt;\nci&quot; ];
-  &quot;&lt;output&gt;&quot;                     [ label=&quot;\&lt;output\&gt;\nci&quot; ];
-  &quot;&lt;comment&gt;&quot;                    [ label=&quot;\&lt;comment\&gt;\nci&quot; ];
-
-  &quot;&lt;instruction&gt;&quot; -&gt; &quot;&lt;memory-instruction&gt;&quot;;
-  &quot;&lt;instruction&gt;&quot; -&gt; &quot;&lt;jump-instruction&gt;&quot;;
-  &quot;&lt;instruction&gt;&quot; -&gt; &quot;&lt;io-instruction&gt;&quot;;
-  &quot;&lt;instruction&gt;&quot; -&gt; &quot;&lt;comment&gt;&quot;;
-  &quot;&lt;memory-instruction&gt;&quot; -&gt; &quot;&lt;memory-data-instruction&gt;&quot;;
-  &quot;&lt;memory-instruction&gt;&quot; -&gt; &quot;&lt;memory-pointer-instruction&gt;&quot;;
-  &quot;&lt;memory-instruction&gt;&quot; -&gt; &quot;&lt;reset-to-zero&gt;&quot;;
-  &quot;&lt;jump-instruction&gt;&quot; -&gt; &quot;&lt;jump-forward&gt;&quot;;
-  &quot;&lt;jump-instruction&gt;&quot; -&gt; &quot;&lt;jump-backward&gt;&quot;;
-  &quot;&lt;io-instruction&gt;&quot; -&gt; &quot;&lt;input&gt;&quot;;
-  &quot;&lt;io-instruction&gt;&quot; -&gt; &quot;&lt;output&gt;&quot;;
-}" class="graphviz" /></div>
+<figure class="align-default" id="id2">
+<div class="graphviz"><img src="_images/graphviz-ab87ef10895abeb8bb0033bfc8a57b58af1a9afb.png" alt="digraph G { 
+     bgcolor  = &quot;#00000000&quot;;
+     ranksep  = 1.0;
+     graph [compound=true];
+     node [
+       fontname=&quot;Helvetica,Arial,sans-serif&quot;
+       shape=record
+     ];
+  
+     &quot;&lt;instruction&gt;&quot;                [ label=&quot;\&lt;instruction\&gt;\na&quot; ];
+     &quot;&lt;memory-instruction&gt;&quot;         [ label=&quot;\&lt;memory-instruction\&gt;\na&quot; ];
+     &quot;&lt;memory-data-instruction&gt;&quot;    [ label=&quot;\&lt;memory-data-instruction\&gt;\nci&quot; ];
+     &quot;&lt;memory-pointer-instruction&gt;&quot; [ label=&quot;\&lt;memory-pointer-instruction\&gt;\nci&quot; ];
+     &quot;&lt;jump-instruction&gt;&quot;           [ label=&quot;\&lt;jump-instruction\&gt;\na&quot; ];
+     &quot;&lt;io-instruction&gt;&quot;             [ label=&quot;\&lt;io-instruction\&gt;\na&quot; ];
+     &quot;&lt;reset-to-zero&gt;&quot;              [ label=&quot;\&lt;reset-to-zero\&gt;\nci&quot; ];
+     &quot;&lt;jump-forward&gt;&quot;               [ label=&quot;\&lt;jump-forward\&gt;\nci&quot; ];
+     &quot;&lt;jump-backward&gt;&quot;              [ label=&quot;\&lt;jump-backward\&gt;\nci&quot; ];
+     &quot;&lt;input&gt;&quot;                      [ label=&quot;\&lt;input\&gt;\nci&quot; ];
+     &quot;&lt;output&gt;&quot;                     [ label=&quot;\&lt;output\&gt;\nci&quot; ];
+     &quot;&lt;comment&gt;&quot;                    [ label=&quot;\&lt;comment\&gt;\nci&quot; ];
+  
+     &quot;&lt;instruction&gt;&quot; -&gt; &quot;&lt;memory-instruction&gt;&quot;;
+     &quot;&lt;instruction&gt;&quot; -&gt; &quot;&lt;jump-instruction&gt;&quot;;
+     &quot;&lt;instruction&gt;&quot; -&gt; &quot;&lt;io-instruction&gt;&quot;;
+     &quot;&lt;instruction&gt;&quot; -&gt; &quot;&lt;comment&gt;&quot;;
+     &quot;&lt;memory-instruction&gt;&quot; -&gt; &quot;&lt;memory-data-instruction&gt;&quot;;
+     &quot;&lt;memory-instruction&gt;&quot; -&gt; &quot;&lt;memory-pointer-instruction&gt;&quot;;
+     &quot;&lt;memory-instruction&gt;&quot; -&gt; &quot;&lt;reset-to-zero&gt;&quot;;
+     &quot;&lt;jump-instruction&gt;&quot; -&gt; &quot;&lt;jump-forward&gt;&quot;;
+     &quot;&lt;jump-instruction&gt;&quot; -&gt; &quot;&lt;jump-backward&gt;&quot;;
+     &quot;&lt;io-instruction&gt;&quot; -&gt; &quot;&lt;input&gt;&quot;;
+     &quot;&lt;io-instruction&gt;&quot; -&gt; &quot;&lt;output&gt;&quot;;
+   }" class="graphviz" /></div>
+<figcaption>
+<p><span class="caption-text">Instructions’ class diagram</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <div class="toctree-wrapper compound">
 </div>
 </section>

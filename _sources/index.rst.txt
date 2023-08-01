@@ -161,42 +161,8 @@ The arrows between the modules are the dependencies.
 Instructions' class diagram
 ---------------------------
 
-.. graphviz::
-
-   digraph G { 
-     bgcolor  = "#00000000";
-     ranksep  = 1.0;
-     graph [compound=true];
-     node [
-       fontname="Helvetica,Arial,sans-serif"
-       shape=record
-     ];
-  
-     "<instruction>"                [ label="\<instruction\>\na" ];
-     "<memory-instruction>"         [ label="\<memory-instruction\>\na" ];
-     "<memory-data-instruction>"    [ label="\<memory-data-instruction\>\nci" ];
-     "<memory-pointer-instruction>" [ label="\<memory-pointer-instruction\>\nci" ];
-     "<jump-instruction>"           [ label="\<jump-instruction\>\na" ];
-     "<io-instruction>"             [ label="\<io-instruction\>\na" ];
-     "<reset-to-zero>"              [ label="\<reset-to-zero\>\nci" ];
-     "<jump-forward>"               [ label="\<jump-forward\>\nci" ];
-     "<jump-backward>"              [ label="\<jump-backward\>\nci" ];
-     "<input>"                      [ label="\<input\>\nci" ];
-     "<output>"                     [ label="\<output\>\nci" ];
-     "<comment>"                    [ label="\<comment\>\nci" ];
-  
-     "<instruction>" -> "<memory-instruction>";
-     "<instruction>" -> "<jump-instruction>";
-     "<instruction>" -> "<io-instruction>";
-     "<instruction>" -> "<comment>";
-     "<memory-instruction>" -> "<memory-data-instruction>";
-     "<memory-instruction>" -> "<memory-pointer-instruction>";
-     "<memory-instruction>" -> "<reset-to-zero>";
-     "<jump-instruction>" -> "<jump-forward>";
-     "<jump-instruction>" -> "<jump-backward>";
-     "<io-instruction>" -> "<input>";
-     "<io-instruction>" -> "<output>";
-   }
+.. graphviz:: classes.dot
+   :caption: Instructions' class diagram	      
 
 .. toctree::
    :maxdepth: 2
