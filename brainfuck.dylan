@@ -33,48 +33,57 @@ define class <interpreter> (<object>)
   virtual slot memory-item :: <integer>;
 end class <interpreter>;
 
-define method current-instruction
-    (bf :: <interpreter>) => (instruction :: <instruction>)
+define function current-instruction
+    (bf :: <interpreter>)
+ => (instruction :: <instruction>)
   bf.interpreter-program[bf.program-pointer]
 end;
 
 define inline method program-at
-    (bf :: <interpreter>, index :: <program-pointer>) => (instruction :: <instruction>)
+    (bf :: <interpreter>, index :: <program-pointer>)
+ => (instruction :: <instruction>)
   bf.interpreter-program[index]
 end;
 
 define inline function program-not-finished?
-    (bf :: <interpreter>) => (finished? :: <boolean>)
+    (bf :: <interpreter>)
+ => (finished? :: <boolean>)
   bf.program-pointer < bf.interpreter-program.size
 end;
 
 define inline function program-forth
-    (bf :: <interpreter>) => (address :: <program-pointer>)
+    (bf :: <interpreter>)
+ => (address :: <program-pointer>)
   bf.program-pointer := bf.program-pointer + 1
 end;
 
 define inline function program-back
-    (bf :: <interpreter>) => (address :: <program-pointer>)
+    (bf :: <interpreter>)
+ => (address :: <program-pointer>)
   bf.program-pointer := bf.program-pointer - 1
 end;
 
-define method memory-item
-    (bf :: <interpreter>) => (cell :: <integer>)
+define function memory-item
+    (bf :: <interpreter>)
+ => (cell :: <integer>)
   bf.interpreter-memory[bf.memory-pointer]
 end;
 
-define method memory-item-setter
-    (value :: <integer>, bf :: <interpreter>) => (cell :: <integer>)
+define function memory-item-setter
+    (value :: <integer>, bf :: <interpreter>)
+ => (cell :: <integer>)
   bf.interpreter-memory[bf.memory-pointer] := value
 end;
 
 define inline method memory-increment
-    (bf :: <interpreter>, amount :: <integer>) => (cell :: <integer>)
+    (bf :: <interpreter>, amount :: <integer>)
+ => (cell :: <integer>)
   bf.memory-item := bf.memory-item + amount
 end;
 
 define inline method memory-forth
-    (bf :: <interpreter>, amount :: <memory-pointer>) => (pointer :: <memory-pointer>)
+    (bf :: <interpreter>, amount :: <memory-pointer>)
+ => (pointer :: <memory-pointer>)
   bf.memory-pointer := bf.memory-pointer + amount
 end;
 
