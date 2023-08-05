@@ -18,6 +18,13 @@ define method print-object
   end;
 end;
 
+define method \=
+    (this :: <memory-instruction>, that :: <memory-instruction>)
+ => (equals? :: <boolean>)
+      next-method()
+    & this.memory-amount = that.memory-amount
+end;
+
 // Memory data instruction
 
 define class <memory-data-instruction> (<memory-instruction>) end;

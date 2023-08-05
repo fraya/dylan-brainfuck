@@ -15,16 +15,6 @@ end;
 
 define class <reset-to-zero> (<instruction>) end;
 
-// Jump instructions
-
-define abstract class <jump-instruction> (<instruction>)
-  slot jump-address :: false-or(<program-pointer>) = #f,
-    init-keyword: address:;
-end;
-
-define class <jump-forward>  (<jump-instruction>) end;
-define class <jump-backward> (<jump-instruction>) end;
-
 // IO instructions
 
 define abstract class <io-instruction> (<instruction>) end;
