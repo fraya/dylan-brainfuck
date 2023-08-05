@@ -15,16 +15,6 @@ end;
 
 define class <reset-to-zero> (<instruction>) end;
 
-// Memory instructions
-
-define abstract class <memory-instruction> (<instruction>)
-  slot memory-amount :: <integer>,
-    required-init-keyword: amount:;
-end;
-
-define class <memory-data-instruction>    (<memory-instruction>) end;
-define class <memory-pointer-instruction> (<memory-instruction>) end;
-
 // Jump instructions
 
 define abstract class <jump-instruction> (<instruction>)

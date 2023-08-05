@@ -165,17 +165,6 @@ end method run-brainfuck-program;
 define generic execute
   (instruction :: <instruction>, bf :: <interpreter>) => ();
 
-define method execute
-    (instruction :: <memory-data-instruction>, bf :: <interpreter>)
- => ()
-  memory-increment(bf, instruction.memory-amount)
-end;
-
-define method execute
-    (instruction :: <memory-pointer-instruction>, bf :: <interpreter>)
- => ()
-  memory-forth(bf, instruction.memory-amount)
-end;
 
 define method execute
     (instruction :: <output>, bf :: <interpreter>) => ()
@@ -347,24 +336,7 @@ define method print-object
 	 bf.memory-item)
 end;
 
-define method print-object
-    (instruction :: <memory-instruction>, s :: <stream>) => ()
-  unless (abs(instruction.memory-amount) = 1)
-    write(s, integer-to-string(abs(instruction.memory-amount)))
-  end;
-end;
 
-define method print-object
-    (instruction :: <memory-data-instruction>, s :: <stream>) => ()
-  write-element(s, if (instruction.memory-amount > 0) '+' else '-' end);
-  next-method();
-end;
-
-define method print-object
-    (instruction :: <memory-pointer-instruction>, s :: <stream>) => ()
-  write-element(s, if (instruction.memory-amount > 0) '>' else '<' end);
-  next-method();
-end;
 
 define method print-object
     (instruction :: <reset-to-zero>, s :: <stream>) => ()
