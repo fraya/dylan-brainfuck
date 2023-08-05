@@ -49,6 +49,6 @@ define method print-object
     (instruction :: <memory-pointer-instruction>, s :: <stream>)
  => ()
   let symbol = if (instruction.memory-amount > 0) '>' else '<' end;
-  write-element(s, simbol);
+  write-element(s, symbol);
   next-method();
 end;
