@@ -167,18 +167,6 @@ define generic execute
 
 
 define method execute
-    (instruction :: <output>, bf :: <interpreter>) => ()
-  format(bf.interpreter-output-stream,
-	 "%c", as(<character>, bf.memory-item));
-  force-out()
-end;
-
-define method execute
-    (instruction :: <input>, bf :: <interpreter>) => ()
-  error("Not implemented yet")
-end;
-
-define method execute
    (instruction :: <comment>, bf :: <interpreter>) => ()
  // do nothing
 end;
@@ -299,15 +287,6 @@ define method print-object
   write-element(s, 'Z');
 end;
 
-define method print-object
-    (input :: <input>, s :: <stream>) => ()
-  write-element(s, ',');
-end;
-
-define method print-object
-    (output :: <output>, s :: <stream>) => ()
-  write-element(s, '.');
-end;
 
 define method print-object
     (comment :: <comment>, s :: <stream>) => ()

@@ -15,11 +15,6 @@ end;
 
 define class <reset-to-zero> (<instruction>) end;
 
-// IO instructions
-
-define abstract class <io-instruction> (<instruction>) end;
-define class <input>  (<io-instruction>) end;
-define class <output> (<io-instruction>) end;
 
 // Errors
 
