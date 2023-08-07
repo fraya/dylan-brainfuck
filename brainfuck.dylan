@@ -166,18 +166,6 @@ define generic execute
   (instruction :: <instruction>, bf :: <interpreter>) => ();
 
 
-define method execute
-   (instruction :: <comment>, bf :: <interpreter>) => ()
- // do nothing
-end;
-
-define method execute
-    (instruction :: <reset-to-zero>, bf :: <interpreter>) => ()
-  bf.memory-item := 0
-end;
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
 //
 //  Optimizations
@@ -280,17 +268,6 @@ define method print-object
 	 bf.current-instruction,
 	 bf.memory-pointer,
 	 bf.memory-item)
-end;
-
-define method print-object
-    (instruction :: <reset-to-zero>, s :: <stream>) => ()
-  write-element(s, 'Z');
-end;
-
-
-define method print-object
-    (comment :: <comment>, s :: <stream>) => ()
-  write-element(s, comment.comment-char)
 end;
 
 define method print-object
