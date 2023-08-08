@@ -15,6 +15,17 @@ define constant <memory>
 define constant <program-pointer>
   = limited(<integer>, min: 0);
 
+define abstract class <instruction> (<object>) end;
+
+// Errors
+
+define class <brainfuck-error> (<error>)
+  constant slot error-instruction :: <instruction>,
+    init-keyword: instruction:;
+end;
+
+define class <mismatch-jump-error> (<brainfuck-error>) end;
+
 define constant <program>
   = limited(<stretchy-vector>, of: <instruction>);
 
