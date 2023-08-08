@@ -32,14 +32,15 @@ define class <memory-data-instruction> (<memory-instruction>) end;
 define method print-object
     (instruction :: <memory-data-instruction>, s :: <stream>)
  => ()
-  write-element(s, if (instruction.memory-amount > 0) '+' else '-' end);
+  let char = if (positive?(instruction.memory-amount)) '+' else '-' end;
+  write-element(s, char);
   next-method();
 end;
 
 define method execute
     (instruction :: <memory-data-instruction>, bf :: <interpreter>)
  => ()
-  memory-increment(bf, instruction.memory-amount)
+  bf.memory.memory-item := bf.memory.memory-item + instruction.memory-amount
 end;
 
 // Memory pointer instruction
@@ -49,13 +50,13 @@ define class <memory-pointer-instruction> (<memory-instruction>) end;
 define method execute
     (instruction :: <memory-pointer-instruction>, bf :: <interpreter>)
  => ()
-  memory-forth(bf, instruction.memory-amount)
+  bf.memory.memory-pointer := bf.memory.memory-pointer + instruction.memory-amount
 end;
 
 define method print-object
     (instruction :: <memory-pointer-instruction>, s :: <stream>)
  => ()
-  let symbol = if (instruction.memory-amount > 0) '>' else '<' end;
-  write-element(s, symbol);
+  let char = if (positive?(instruction.memory-amount)) '>' else '<' end;
+  write-element(s, char);
   next-method();
 end;

@@ -31,5 +31,5 @@ end;
 
 define method execute
     (instruction :: <reset-to-zero>, bf :: <interpreter>) => ()
-  bf.memory-item := 0
+  bf.memory.memory-item := 0
 end;

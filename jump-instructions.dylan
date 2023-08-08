@@ -50,7 +50,7 @@ define method execute
 	error(make(<brainfuck-error>, instruction: bf.current-instruction))
       end block;
     end method;
-  when (bf.memory-item = 0)
+  when (bf.memory.memory-item = 0)
     bf.program-pointer := jump.jump-address | find-jump-backward(bf)
   end when;
 end execute;
@@ -82,7 +82,7 @@ define method execute
 	error(make(<brainfuck-error>, instruction: bf.current-instruction))
       end block;
     end method;
-  when (bf.memory-item ~= 0)
+  when (bf.memory.memory-item ~= 0)
     bf.program-pointer := jump.jump-address | find-jump-forward(bf)
   end when;
 end execute;

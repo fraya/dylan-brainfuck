@@ -33,6 +33,6 @@ end;
 define method execute
     (instruction :: <output>, bf :: <interpreter>) => ()
   format(bf.interpreter-output-stream,
-	 "%c", as(<character>, bf.memory-item));
+	 "%c", as(<character>, bf.memory.memory-item));
   force-out()
 end;

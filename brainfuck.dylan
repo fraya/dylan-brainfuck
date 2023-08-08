@@ -3,15 +3,6 @@ Synopsis: Brainfuck core
 Author: Fernando Raya
 Copyright: GPLv3
 
-define constant $memory-size
-  = 30000;
-
-define constant <memory-pointer>
-  = limited(<integer>);
-
-define constant <memory>
-  = limited(<vector>, of: <integer>, size: $memory-size);
-
 define constant <program-pointer>
   = limited(<integer>, min: 0);
 
@@ -32,16 +23,13 @@ define constant <program>
 define class <interpreter> (<object>)
   slot program-pointer :: <program-pointer> = 0,
     init-keyword: program-pointer:;
-  slot memory-pointer :: <memory-pointer> = 0,
-    init-keyword: memory-pointer:;
   constant slot interpreter-program :: <program>,
     required-init-keyword: program:;
-  constant slot interpreter-memory :: <memory> = make(<memory>, fill: 0),
-    init-keyword: memory:;
   constant slot interpreter-output-stream :: <stream> = *standard-output*,
     init-keyword: output-stream:;
   constant virtual slot current-instruction :: <instruction>;
-  virtual slot memory-item :: <integer>;
+  constant slot memory :: <memory> = make(<memory>),
+    init-keyword: memory:;
 end class <interpreter>;
 
 define function current-instruction
@@ -72,30 +60,6 @@ define inline function program-back
     (bf :: <interpreter>)
  => (address :: <program-pointer>)
   bf.program-pointer := bf.program-pointer - 1
-end;
-
-define function memory-item
-    (bf :: <interpreter>)
- => (cell :: <integer>)
-  bf.interpreter-memory[bf.memory-pointer]
-end;
-
-define function memory-item-setter
-    (value :: <integer>, bf :: <interpreter>)
- => (cell :: <integer>)
-  bf.interpreter-memory[bf.memory-pointer] := value
-end;
-
-define inline method memory-increment
-    (bf :: <interpreter>, amount :: <integer>)
- => (cell :: <integer>)
-  bf.memory-item := bf.memory-item + amount
-end;
-
-define inline method memory-forth
-    (bf :: <interpreter>, amount :: <memory-pointer>)
- => (pointer :: <memory-pointer>)
-  bf.memory-pointer := bf.memory-pointer + amount
 end;
 
 define method as
@@ -277,8 +241,8 @@ define method print-object
   format(s,"PP[%d]='%=' DP[%d]=%d\n",
 	 bf.program-pointer,
 	 bf.current-instruction,
-	 bf.memory-pointer,
-	 bf.memory-item)
+	 bf.memory.memory-pointer,
+	 bf.memory.memory-item)
 end;
 
 define method print-object
