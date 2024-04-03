@@ -18,7 +18,7 @@ end;
 define function main
   (name :: <string>, arguments :: <vector>)  
   if (arguments.size < 1)
-    format-out("USAGE:\n\t%s <program> [optimization]\n\n", application-name());
+    format-out("USAGE:\n\t%s <program> [optimization]\n\n", name);
     format-out("optimization:\n");
     format-out("\t0: No optimization\n");
     format-out("\t1: Remove comments\n");
