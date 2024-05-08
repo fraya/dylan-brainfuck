@@ -13,9 +13,11 @@ define abstract class <io-instruction> (<instruction>)
 end;
 
 define class <input> (<io-instruction>)
+  inherited slot instruction-symbol = ',';
 end;
 
 define class <output> (<io-instruction>)
+  inherited slot instruction-symbol = '.';
 end;
 
 ////////////////////////////////////////////////////////////////////////

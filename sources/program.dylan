@@ -9,35 +9,39 @@ define constant <program-pointer>
 define constant <program>
   = limited(<vector>, of: <instruction>);
 
+define constant $brainfuck-table
+  = instruction-table(<memory-pointer-increment>,
+		      <memory-pointer-decrement>,
+		      <memory-data-increment>,
+		      <memory-data-decrement>,
+		      <output>,
+		      <input>,
+		      <jump-forward>,
+		      <jump-backward>,
+		      <reset-to-zero>);
+
+define function parse-character
+    (char :: <character>) => (instruction :: <instruction>)
+  let type = element($brainfuck-table, char, default: <comment>);
+  make(type)
+end;
+
 define generic read-program
-  (source :: <object>) => (program :: <program>);
+  (object :: <object>) => (program :: <program>);
+
+define method read-program
+    (sequence :: <sequence>) => (program :: <program>)
+  map-as(<program>, parse-character, sequence)
+end;
 
 define method read-program
     (stream :: <stream>) => (program :: <program>)
-  let program = make(<program>);
-  while (~stream-at-end?(stream))
-    let char = as(<character>, read-element(stream));
-    let instruction = parse-instruction(char);
-    when (instruction) program := add(program, instruction) end;
-  end;
-  program
-end method read-program;
+  read-program(read-to-end(stream))
+end;
 
 define method read-program
     (locator :: <locator>) => (program :: <program>)  
-  with-open-file (fs = locator, element-type: <byte>)
+  with-open-file (fs = locator, element-type: <byte-character>)
     read-program(fs)
   end;
-end;
-
-define method read-program
-    (string :: <string>) => (program :: <program>)
-  with-input-from-string(stream = string)
-    read-program(stream)
-  end
-end;
-
-define method read-program
-    (instructions :: <collection>) => (program :: <program>)
-  map-as(<program>, identity, instructions)
 end;

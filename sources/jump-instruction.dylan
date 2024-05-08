@@ -15,9 +15,11 @@ define abstract class <jump-instruction> (<instruction>)
 end;
 
 define class <jump-forward>  (<jump-instruction>)
+  inherited slot instruction-symbol = '[';
 end;
 
 define class <jump-backward> (<jump-instruction>)
+  inherited slot instruction-symbol = ']';
 end;
 
 ////////////////////////////////////////////////////////////////////////
@@ -41,7 +43,7 @@ define method execute
 	  end select;
 	  if (level = 0) address(index) end;
 	end for;
-	signal(make(<brainfuck-error>, instruction: jump));
+	error("Mismatched jump: %=", jump);
       end block;
     end method;
   when (bf.interpreter-memory.memory-item = 0)
@@ -64,7 +66,7 @@ define method execute
 	  end select;
 	  if (level = 0) address(index) end;
 	end for;
-	error(make(<brainfuck-error>, instruction: jump));
+	error("Mismatched jump: %=", jump);
       end block;
     end method;
   when (bf.interpreter-memory.memory-item ~= 0)
@@ -82,19 +84,8 @@ define method print-object
     (jump :: <jump-instruction>, s :: <stream>) => ()
   when (jump.jump-address)
     write(s, integer-to-string(jump.jump-address))
-  end
-end;
-
-define method print-object
-    (jump :: <jump-forward>, s :: <stream>) => ()
-  write-element(s, '[');
-  next-method()
-end;
-
-define method print-object
-    (jump :: <jump-backward>, s :: <stream>) => ()
-  write-element(s, ']');
-  next-method()
+  end;
+  next-method();
 end;
 
 ////////////////////////////////////////////////////////////////////////

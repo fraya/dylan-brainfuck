@@ -14,13 +14,6 @@ end library;
 
 define module brainfuck
 
-  // Errors
-  
-  create
-    <brainfuck-error>,
-    error-instruction,
-    <mismatch-jump-error>;
-
   // Memory
   
   create
@@ -45,8 +38,6 @@ define module brainfuck
     <interpreter>,
     program-pointer;
   
-
-
 end module;
 
 define module brainfuck-impl
@@ -63,7 +54,7 @@ define module brainfuck-impl
 
   // Instruction
   export
-    parse-instruction;
+    parse-character;
   
   // Memory
   

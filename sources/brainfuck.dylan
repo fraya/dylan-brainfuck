@@ -3,8 +3,6 @@ Synopsis: Brainfuck core
 Author: Fernando Raya
 Copyright: GPLv3
 
-define abstract class <instruction> (<object>)
-end;
 
 define class <interpreter> (<object>)
   slot program-pointer :: <program-pointer> = 0,
@@ -37,47 +35,14 @@ define inline method program-forth
   interpreter.program-pointer := interpreter.program-pointer + 1
 end;
 
-////////////////////////////////////////////////////////////////////////
-//
-// Parse instructions
-//
-////////////////////////////////////////////////////////////////////////
-
-define function type-of-instruction
-    (char :: <character>) => (type :: false-or(<class>))
-  select (char)
-    '>' => <memory-pointer-increment>;
-    '<' => <memory-pointer-decrement>;
-    '+' => <memory-data-increment>;
-    '-' => <memory-data-decrement>;
-    '.' => <output>;
-    ',' => <input>;
-    '[' => <jump-forward>;
-    ']' => <jump-backward>;
-    otherwise
-      => #f;
-  end select;
-end;
-
-define method parse-instruction
-    (char :: <character>) => (instruction :: false-or(<instruction>))
-  let type = type-of-instruction(char);
-  if (type) make(type) else #f end
-end;
-
 define method run-brainfuck-program
     (interpreter :: <interpreter>) => (bf :: <interpreter>)
-  block ()
-    while (program-not-finished?(interpreter))
-      // format-out("%=\n", interpreter); force-out();
-      execute(interpreter.current-instruction, interpreter);
-      program-forth(interpreter);
-    end;
-    interpreter
-  exception (error :: <error>)
-    let instruction = interpreter.current-instruction;
-    signal(make(<brainfuck-error>, instruction: instruction));
-  end block;
+  while (program-not-finished?(interpreter))
+    // format-out("%=\n", interpreter); force-out();
+    execute(interpreter.current-instruction, interpreter);
+    program-forth(interpreter);
+  end;
+  interpreter
 end method run-brainfuck-program;
 
 define method run-brainfuck-program
@@ -101,6 +66,11 @@ define generic execute
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+define function remove-comments
+    (program :: <program>) => (optimized :: <program>)
+  choose(method (x) ~instance?(x, <comment>) end, program)
+end;
+
 define function group-instructions
     (program :: <program>) => (optimized :: <program>)
   local
@@ -123,17 +93,17 @@ define function group-instructions
 end function;
 
 define function reset-to-zero
-    (program :: <program>) => (optimized :: <program>)
+    (origin :: <program>) => (optimized :: <program>)
   let pattern      = read-program("[-]");
   let optimization = make(<reset-to-zero>); 
   let optimized    = make(<program>);
-  for (i from 0 below program.size)
-    if (i + 2 < program.size)
-      let optimizable? = pattern = copy-sequence(program, start: i, end: i + 3);
-      optimized := add(optimized, if (optimizable?) optimization else program[i] end);
+  for (i from 0 below origin.size)
+    if (i + 2 < origin.size)
+      let optimizable? = pattern = copy-sequence(origin, start: i, end: i + 3);
+      optimized := add(optimized, if (optimizable?) optimization else origin[i] end);
       when (optimizable?) i := i + 2 end;
     else
-      optimized := add(optimized, program[i]);
+      optimized := add(optimized, origin[i]);
     end if;
   end for;
   optimized
@@ -155,7 +125,7 @@ define function precalculate-jumps
     end select;
   end for;
   if (~empty?(levels))
-    error(make(<mismatch-jump-error>));
+    error("Mismatched jump instruction");
   end if;
   optimized;
 end function;
@@ -165,15 +135,17 @@ end function;
 define function optimize-program
     (program :: <program>, level :: <integer>)
  => (optimized :: <program>)
-  let o1 = group-instructions;
-  let o2 = compose(reset-to-zero, o1);
-  let o3 = compose(precalculate-jumps, o2);
+  let o1 = remove-comments;
+  let o2 = compose(group-instructions, o1);
+  let o3 = compose(reset-to-zero, o2);
+  let o4 = compose(precalculate-jumps, o3);
   select (level)
     0 => program;
     1 => o1(program);
     2 => o2(program);
+    3 => o3(program);
     otherwise =>
-      o3(program)
+      o4(program)
   end select;
 end function optimize-program;
 

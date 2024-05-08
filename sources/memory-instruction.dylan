@@ -21,18 +21,23 @@ define abstract class <memory-pointer-instruction> (<memory-instruction>)
 end;
 
 define class <memory-data-increment> (<memory-data-instruction>)
+  inherited slot instruction-symbol = '+';
 end;
 
 define class <memory-data-decrement> (<memory-data-instruction>)
+  inherited slot instruction-symbol = '-';
 end;
 
 define class <reset-to-zero> (<memory-data-instruction>)
+  inherited slot instruction-symbol = 'Z';
 end;
 
 define class <memory-pointer-increment> (<memory-pointer-instruction>)
+  inherited slot instruction-symbol = '>';
 end;
 
 define class <memory-pointer-decrement> (<memory-pointer-instruction>)
+  inherited slot instruction-symbol = '<';
 end;
 
 ////////////////////////////////////////////////////////////////////////
@@ -80,36 +85,8 @@ define method print-object
     (instruction :: <memory-instruction>, s :: <stream>) => ()
   unless (instruction.instruction-amount == 1) 
     write(s, integer-to-string(instruction.instruction-amount)) 
-  end
-end;
-
-define method print-object
-    (instruction :: <memory-data-increment>, s :: <stream>) => ()
-  write-element(s, '+');
+  end;
   next-method();
-end;
-
-define method print-object
-    (instruction :: <memory-data-decrement>, s :: <stream>) => ()
-  write-element(s, '-');
-  next-method();
-end;
-
-define method print-object
-    (instruction :: <memory-pointer-increment>, s :: <stream>) => ()
-  write-element(s, '>');
-  next-method();
-end;
-
-define method print-object
-    (instruction :: <memory-pointer-decrement>, s :: <stream>) => ()
-  write-element(s, '<');
-  next-method();
-end;
-
-define method print-object
-    (instruction :: <reset-to-zero>, s :: <stream>) => ()
-  write-element(s, 'Z');
 end;
 
 ////////////////////////////////////////////////////////////////////////

@@ -15,14 +15,14 @@ end;
 //////////////////////////////////////////////////////////////////////////////
 
 define test test-parse-instructions ()
-  assert-instance?(<memory-data-increment>, parse-instruction('+'));
-  assert-instance?(<memory-data-decrement>, parse-instruction('-'));
-  assert-instance?(<memory-pointer-increment>, parse-instruction('>'));
-  assert-instance?(<memory-pointer-decrement>, parse-instruction('<'));
-  assert-instance?(<jump-forward>, parse-instruction('['));
-  assert-instance?(<jump-backward>, parse-instruction(']'));
-  assert-instance?(<input>, parse-instruction(','));
-  assert-instance?(<output>, parse-instruction('.'));
+  expect-instance?(<memory-data-increment>, parse-character('+'));
+  expect-instance?(<memory-data-decrement>, parse-character('-'));
+  expect-instance?(<memory-pointer-increment>, parse-character('>'));
+  expect-instance?(<memory-pointer-decrement>, parse-character('<'));
+  expect-instance?(<jump-forward>, parse-character('['));
+  expect-instance?(<jump-backward>, parse-character(']'));
+  expect-instance?(<input>, parse-character(','));
+  expect-instance?(<output>, parse-character('.'));
 end;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -32,9 +32,9 @@ end;
 //////////////////////////////////////////////////////////////////////////////
 
 define test test-reset-to-zero ()
-  let program   = read-program("[-]");
-  let optimized = reset-to-zero(program);
-  let expected  = read-program(vector(make(<reset-to-zero>)));
+  let source    = read-program("[-]");
+  let optimized = reset-to-zero(source);
+  let expected  = read-program("Z");
   assert-equal(expected, optimized, "Replace '[-]' with 'Z'");
  end;
 
