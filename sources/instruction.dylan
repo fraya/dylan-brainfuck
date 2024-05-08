@@ -9,8 +9,3 @@ define abstract class <instruction> (<object>)
   constant slot instruction-column :: false-or(<integer>) = #f,
     init-keyword: column:;
 end;
-
-define class <comment> (<instruction>)
-  constant slot comment-char :: <character>,
-    init-keyword: char:;
-end;

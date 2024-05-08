@@ -88,11 +88,6 @@ end;
 define generic execute
   (instruction :: <instruction>, bf :: <interpreter>) => ();
 
-define method execute
-   (instruction :: <comment>, bf :: <interpreter>) => ()
- // do nothing
-end;
-
 ///////////////////////////////////////////////////////////////////////////////
 //
 //  Optimizations
@@ -194,11 +189,6 @@ define method print-object
   format(s," PP:%03d '%='",
 	 bf.program-pointer,
 	 bf.current-instruction);
-end;
-
-define method print-object
-    (comment :: <comment>, s :: <stream>) => ()
-  write-element(s, comment.comment-char)
 end;
 
 ////////////////////////////////////////////////////////////////////////
