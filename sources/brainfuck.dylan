@@ -43,24 +43,27 @@ end;
 //
 ////////////////////////////////////////////////////////////////////////
 
-define method parse-instruction
-    (char :: <character>)
- => (instruction :: false-or(<instruction>))
-  let type :: false-or(<class>) = select (char)
-				    '>' => <memory-pointer-increment>;
-				    '<' => <memory-pointer-decrement>;
-				    '+' => <memory-data-increment>;
-				    '-' => <memory-data-decrement>;
-				    '.' => <output>;
-				    ',' => <input>;
-				    '[' => <jump-forward>;
-				    ']' => <jump-backward>;
-				    otherwise
-				      => #f;
-				  end select;
-  if (type) make(type) else #f end
+define function type-of-instruction
+    (char :: <character>) => (type :: false-or(<class>))
+  select (char)
+    '>' => <memory-pointer-increment>;
+    '<' => <memory-pointer-decrement>;
+    '+' => <memory-data-increment>;
+    '-' => <memory-data-decrement>;
+    '.' => <output>;
+    ',' => <input>;
+    '[' => <jump-forward>;
+    ']' => <jump-backward>;
+    otherwise
+      => #f;
+  end select;
 end;
 
+define method parse-instruction
+    (char :: <character>) => (instruction :: false-or(<instruction>))
+  let type = type-of-instruction(char);
+  if (type) make(type) else #f end
+end;
 
 define method run-brainfuck-program
     (interpreter :: <interpreter>) => (bf :: <interpreter>)
