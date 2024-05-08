@@ -128,11 +128,6 @@ define method execute
 end;
 
 define method execute
-    (instruction :: <reset-to-zero>, bf :: <interpreter>) => ()
-  bf.interpreter-memory.memory-item := 0
-end;
-
-define method execute
     (jump :: <jump-forward>, bf :: <interpreter>) => ()
   local
     method find-address(bf)
@@ -279,42 +274,6 @@ define method print-object
   format(s," PP:%03d '%='",
 	 bf.program-pointer,
 	 bf.current-instruction);
-end;
-
-define method print-object
-    (instruction :: <memory-instruction>, s :: <stream>) => ()
-  unless (instruction.instruction-amount == 1) 
-    write(s, integer-to-string(instruction.instruction-amount)) 
-  end
-end;
-
-define method print-object
-    (instruction :: <memory-data-increment>, s :: <stream>) => ()
-  write-element(s, '+');
-  next-method();
-end;
-
-define method print-object
-    (instruction :: <memory-data-decrement>, s :: <stream>) => ()
-  write-element(s, '-');
-  next-method();
-end;
-
-define method print-object
-    (instruction :: <memory-pointer-increment>, s :: <stream>) => ()
-  write-element(s, '>');
-  next-method();
-end;
-
-define method print-object
-    (instruction :: <memory-pointer-decrement>, s :: <stream>) => ()
-  write-element(s, '<');
-  next-method();
-end;
-
-define method print-object
-    (instruction :: <reset-to-zero>, s :: <stream>) => ()
-  write-element(s, 'Z');
 end;
 
 define method print-object
