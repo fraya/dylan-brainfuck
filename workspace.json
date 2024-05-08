@@ -1,4 +1,0 @@
-{
-    "default-library": "brainfuck-test-suite",
-    "brainfuck-app"  : "brainfuck-app"
-}
