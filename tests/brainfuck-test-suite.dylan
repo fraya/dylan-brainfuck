@@ -1,5 +1,13 @@
 Module: brainfuck-test-suite
 
+define test test-memory ()
+  let memory = make(<memory>);
+  memory-increment(memory, 1);
+  assert-equal(1, memory.memory-item);
+  memory-decrement(memory, 1);
+  assert-equal(0, memory.memory-item);
+end;
+
 //////////////////////////////////////////////////////////////////////////////
 //
 // Read a program
