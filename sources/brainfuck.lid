@@ -1,7 +1,6 @@
 Library: brainfuck
 Files: library.dylan
        errors.dylan
-       instruction.dylan
        io-instruction.dylan
        jump-instruction.dylan
        memory-instruction.dylan

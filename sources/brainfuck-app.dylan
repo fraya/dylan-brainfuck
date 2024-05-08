@@ -44,8 +44,6 @@ define function main
   exception (error :: <brainfuck-error>)
     let instruction = error.error-instruction;
     format-out("\n%d:%d: Error executing instruction '%='\n",
-	       instruction.instruction-line,
-	       instruction.instruction-column,
 	       instruction);
     exit-application(2);
   end;

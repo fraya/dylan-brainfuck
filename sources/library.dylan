@@ -31,10 +31,8 @@ define module brainfuck
   // Instructions
   
   create
-    <instruction>,
-    instruction-line,
-    instruction-column;
-
+    <instruction>;
+    
   // Program
   
   create

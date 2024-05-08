@@ -3,6 +3,9 @@ Synopsis: Brainfuck core
 Author: Fernando Raya
 Copyright: GPLv3
 
+define abstract class <instruction> (<object>)
+end;
+
 define class <interpreter> (<object>)
   slot program-pointer :: <program-pointer> = 0,
     init-keyword: program-pointer:;
