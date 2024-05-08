@@ -10,7 +10,6 @@ define abstract class <instruction> (<object>)
     init-keyword: column:;
 end;
 
-
 define abstract class <jump-instruction> (<instruction>)
   slot jump-address :: false-or(<program-pointer>) = #f,
     init-keyword: address:;
@@ -22,14 +21,6 @@ end;
 define class <jump-backward> (<jump-instruction>)
 end;
 
-define abstract class <io-instruction> (<instruction>)
-end;
-
-define class <input> (<io-instruction>)
-end;
-
-define class <output> (<io-instruction>)
-end;
 
 define class <comment> (<instruction>)
   constant slot comment-char :: <character>,
