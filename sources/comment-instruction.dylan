@@ -7,12 +7,6 @@ define class <comment> (<instruction>)
   inherited slot instruction-symbol = '#';
 end;
 
-////////////////////////////////////////////////////////////////////////
-//
-// Execute methods
-//
-////////////////////////////////////////////////////////////////////////
-
 define method execute
     (instruction :: <comment>, bf :: <interpreter>) => ()
   // do nothing
