@@ -15,7 +15,6 @@ end;
 //////////////////////////////////////////////////////////////////////////////
 
 define test test-parse-instructions ()
-  assert-instance?(<comment>, parse-instruction('#'));
   assert-instance?(<memory-data-increment>, parse-instruction('+'));
   assert-instance?(<memory-data-decrement>, parse-instruction('-'));
   assert-instance?(<memory-pointer-increment>, parse-instruction('>'));
@@ -24,23 +23,6 @@ define test test-parse-instructions ()
   assert-instance?(<jump-backward>, parse-instruction(']'));
   assert-instance?(<input>, parse-instruction(','));
   assert-instance?(<output>, parse-instruction('.'));
-end;
-
-//////////////////////////////////////////////////////////////////////////////
-//
-// Remove comments tests
-//
-//////////////////////////////////////////////////////////////////////////////
-
-define test test-remove-comments ()
-  let p1 = read-program("");
-  assert-true(empty?(program-remove-comments(p1)));
-  
-  let p2 = read-program("$#");
-  assert-true(empty?(program-remove-comments(p2)));
-  
-  let p3 = read-program("+#-");
-  assert-equal(read-program("+-"), program-remove-comments(p3));
 end;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -77,7 +59,6 @@ end;
 
 define suite brainfuck-test-suite ()
   test test-parse-instructions;
-  test test-remove-comments;
   test test-reset-to-zero;
   test test-group-instructions;
   test test-precalculate-jumps;

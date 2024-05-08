@@ -15,17 +15,10 @@ define generic read-program
 define method read-program
     (stream :: <stream>) => (program :: <program>)
   let program = make(<program>);
-  let line   = 0;
-  let column = 0;
   while (~stream-at-end?(stream))
     let char = as(<character>, read-element(stream));
-    if (char = '\n')
-      column := 0; line := line + 1;
-    else
-      column := column + 1;
-    end;
-    let instruction = parse-instruction(char, line: line, column: column);
-    program := add(program, instruction);
+    let instruction = parse-instruction(char);
+    when (instruction) program := add(program, instruction) end;
   end;
   program
 end method read-program;
@@ -39,7 +32,9 @@ end;
 
 define method read-program
     (string :: <string>) => (program :: <program>)
-  map-as(<program>, parse-instruction, string)
+  with-input-from-string(stream = string)
+    read-program(stream)
+  end
 end;
 
 define method read-program

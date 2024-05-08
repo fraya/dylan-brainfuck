@@ -113,12 +113,10 @@ define module brainfuck-impl
     <output>;
 
   export
-    <comment>,
     <reset-to-zero>;
 
   export
     execute,
-    program-remove-comments,
     reset-to-zero,
     group-instructions,
     precalculate-jumps;

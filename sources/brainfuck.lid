@@ -1,6 +1,5 @@
 Library: brainfuck
 Files: library.dylan
-       comment-instruction.dylan
        errors.dylan
        instruction.dylan
        io-instruction.dylan

@@ -41,19 +41,19 @@ end;
 ////////////////////////////////////////////////////////////////////////
 
 define method parse-instruction
-    (char :: <character>, #key line = #f, column = #f)
- => (instruction :: <instruction>)
+    (char :: <character>)
+ => (instruction :: false-or(<instruction>))
   select (char)
-    '>' => make(<memory-pointer-increment>, line: line, column: column);
-    '<' => make(<memory-pointer-decrement>, line: line, column: column);
-    '+' => make(<memory-data-increment>, line: line, column: column);
-    '-' => make(<memory-data-decrement>, line: line, column: column);
-    '.' => make(<output>, line: line, column: column);
-    ',' => make(<input>, line: line, column: column);
-    '[' => make(<jump-forward>, line: line, column: column);
-    ']' => make(<jump-backward>, line: line, column: column);
+    '>' => make(<memory-pointer-increment>);
+    '<' => make(<memory-pointer-decrement>);
+    '+' => make(<memory-data-increment>);
+    '-' => make(<memory-data-decrement>);
+    '.' => make(<output>);
+    ',' => make(<input>);
+    '[' => make(<jump-forward>);
+    ']' => make(<jump-backward>);
     otherwise
-      => make(<comment>, char: char, line: line, column: column);
+      #f;
   end select;
 end;
 
@@ -93,11 +93,6 @@ define generic execute
 //  Optimizations
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-define function program-remove-comments
-    (program :: <program>) => (optimized :: <program>)
-  choose(method (x) ~instance?(x, <comment>) end, program)
-end;
 
 define function group-instructions
     (program :: <program>) => (optimized :: <program>)
@@ -163,17 +158,15 @@ end function;
 define function optimize-program
     (program :: <program>, level :: <integer>)
  => (optimized :: <program>)
-  let o1 = compose(program-remove-comments);
-  let o2 = compose(group-instructions, o1);
-  let o3 = compose(reset-to-zero, o2);
-  let o4 = compose(precalculate-jumps, o3);
+  let o1 = group-instructions;
+  let o2 = compose(reset-to-zero, o1);
+  let o3 = compose(precalculate-jumps, o2);
   select (level)
     0 => program;
     1 => o1(program);
     2 => o2(program);
-    3 => o3(program);
     otherwise =>
-      o4(program)
+      o3(program)
   end select;
 end function optimize-program;
 

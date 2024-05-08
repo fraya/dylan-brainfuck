@@ -21,10 +21,9 @@ define function main
     format-out("USAGE:\n\t%s <program> [optimization]\n\n", name);
     format-out("optimization:\n");
     format-out("\t0: No optimization\n");
-    format-out("\t1: Remove comments\n");
-    format-out("\t2: Level 1 and group instructions\n");
-    format-out("\t3: Level 2 and replace pattern [-] with reset to zero\n");    
-    format-out("\t4: Level 3 and precalculate jumps (default)\n");
+    format-out("\t1: Group instructions\n");
+    format-out("\t2: Level 1 and replace pattern [-] with reset to zero\n");    
+    format-out("\t3: Level 2 and precalculate jumps (default)\n");
     exit-application(1);
   end if;
   
@@ -35,7 +34,7 @@ define function main
       exit-application(1)
     end;
 
-    let optimization-level = 4;
+    let optimization-level = 3;
     if (arguments.size > 1)
       optimization-level := string-to-integer(arguments[1]);
     end;
