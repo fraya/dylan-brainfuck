@@ -3,7 +3,10 @@
     "category": "interpreters",
     "description": "Brainfuck interpreter",
     "dependencies": [  ],
-    "dev-dependencies": [ "testworks@2.1" ],
+    "dev-dependencies": [
+	"testworks@3.2",
+	"sphinx-extensions@0.2.0"
+    ],
     "version": "0.1.0",
     "url": "https://github.com/fraya/dylan-brainfuck"
 }

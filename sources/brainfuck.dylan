@@ -43,18 +43,19 @@ end;
 define method parse-instruction
     (char :: <character>)
  => (instruction :: false-or(<instruction>))
-  select (char)
-    '>' => make(<memory-pointer-increment>);
-    '<' => make(<memory-pointer-decrement>);
-    '+' => make(<memory-data-increment>);
-    '-' => make(<memory-data-decrement>);
-    '.' => make(<output>);
-    ',' => make(<input>);
-    '[' => make(<jump-forward>);
-    ']' => make(<jump-backward>);
-    otherwise
-      #f;
-  end select;
+  let type :: false-or(<class>) = select (char)
+				    '>' => <memory-pointer-increment>;
+				    '<' => <memory-pointer-decrement>;
+				    '+' => <memory-data-increment>;
+				    '-' => <memory-data-decrement>;
+				    '.' => <output>;
+				    ',' => <input>;
+				    '[' => <jump-forward>;
+				    ']' => <jump-backward>;
+				    otherwise
+				      => #f;
+				  end select;
+  if (type) make(type) else #f end
 end;
 
 
