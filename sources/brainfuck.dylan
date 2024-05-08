@@ -279,13 +279,6 @@ define method \=
 end;
 
 define method \=
-    (this :: <memory-data-instruction>, that :: <memory-data-instruction>)
- => (equals? :: <boolean>)
-      object-class(this) = object-class(that)
-    & this.instruction-amount = that.instruction-amount
-end;
-
-define method \=
     (this :: <jump-instruction>, that :: <jump-instruction>)
  => (equals? :: <boolean>)
   next-method() & this.jump-address = that.jump-address

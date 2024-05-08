@@ -111,3 +111,16 @@ define method print-object
     (instruction :: <reset-to-zero>, s :: <stream>) => ()
   write-element(s, 'Z');
 end;
+
+////////////////////////////////////////////////////////////////////////
+//
+//  Equal methods
+//
+////////////////////////////////////////////////////////////////////////
+
+define method \=
+    (this :: <memory-data-instruction>, that :: <memory-data-instruction>)
+ => (equals? :: <boolean>)
+      object-class(this) = object-class(that)
+    & this.instruction-amount = that.instruction-amount
+end;
