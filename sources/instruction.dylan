@@ -10,31 +10,6 @@ define abstract class <instruction> (<object>)
     init-keyword: column:;
 end;
 
-define abstract class <memory-instruction> (<instruction>)
-  slot instruction-amount :: <integer> = 1,
-    init-keyword: amount:;
-end;
-
-define abstract class <memory-data-instruction> (<memory-instruction>)
-end;
-
-define abstract class <memory-pointer-instruction> (<memory-instruction>)
-end;
-
-define class <memory-data-increment> (<memory-data-instruction>)
-end;
-
-define class <memory-data-decrement> (<memory-data-instruction>)
-end;
-
-define class <memory-pointer-increment> (<memory-pointer-instruction>)
-end;
-
-define class <memory-pointer-decrement> (<memory-pointer-instruction>)
-end;
-
-define class <reset-to-zero> (<memory-data-instruction>)
-end;
 
 define abstract class <jump-instruction> (<instruction>)
   slot jump-address :: false-or(<program-pointer>) = #f,

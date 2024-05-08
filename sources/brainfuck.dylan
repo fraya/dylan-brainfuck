@@ -112,30 +112,6 @@ define generic execute
 // end method execute;
 
 define method execute
-    (instruction :: <memory-data-increment>, bf :: <interpreter>)
- => ()
-  memory-increment(bf.interpreter-memory, instruction.instruction-amount)
-end;
-
-define method execute
-    (instruction :: <memory-data-decrement>, bf :: <interpreter>)
- => ()
-  memory-decrement(bf.interpreter-memory, instruction.instruction-amount)
-end;
-
-define method execute
-    (instruction :: <memory-pointer-increment>, bf :: <interpreter>)
- => ()
-  memory-forth(bf.interpreter-memory, instruction.instruction-amount)
-end;
-
-define method execute
-    (instruction :: <memory-pointer-decrement>, bf :: <interpreter>)
- => ()
-  memory-back(bf.interpreter-memory, instruction.instruction-amount);
-end;
-
-define method execute
     (instruction :: <output>, bf :: <interpreter>) => ()
   format-out("%c", as(<character>, bf.interpreter-memory.memory-item));
   force-out();
