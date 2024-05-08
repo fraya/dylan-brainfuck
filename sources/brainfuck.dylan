@@ -88,29 +88,6 @@ end;
 define generic execute
   (instruction :: <instruction>, bf :: <interpreter>) => ();
 
-// define method execute
-//     (bf :: <interpreter>, instruction :: <instruction>) => ()
-//   select (object-class(instruction))
-//     <memory-data-increment> =>
-//       memory-increment(bf, instruction.instruction-amount);
-//     <memory-data-decrement> =>
-//       memory-decrement(bf, instruction.instruction-amount);
-//     <memory-pointer-increment> =>
-//       memory-forth(bf, instruction.instruction-amount);
-//     <memory-pointer-decrement> => 
-//       memory-back(bf, instruction.instruction-amount);
-//     <output> =>
-//       format-out("%c", as(<character>, bf.memory-item));
-//       force-out();
-//     <reset-to-zero> => 
-//       bf.memory[bf.memory-pointer] := 0;
-//     <comment> =>
-//       ;
-//     otherwise =>
-//       error("Unknown instruction");
-//   end select;
-// end method execute;
-
 define method execute
     (instruction :: <output>, bf :: <interpreter>) => ()
   format-out("%c", as(<character>, bf.interpreter-memory.memory-item));
