@@ -29,7 +29,7 @@ define constant <program-pointer>
   = limited(<integer>);
 
 define constant <program>
-  = limited(<stretchy-vector>, of: <instruction>);
+  = limited(<vector>, of: <instruction>);
 
 define class <interpreter> (<object>)
   slot program-pointer :: <program-pointer> = 0,
@@ -171,7 +171,8 @@ define method read-program
     else
       column := column + 1;
     end;
-    add!(program, parse-instruction(char, line: line, column: column));
+    let instruction = parse-instruction(char, line: line, column: column);
+    program := add(program, instruction);
   end;
   program
 end method read-program;
@@ -364,7 +365,7 @@ define function group-instructions
       read-element(stream);
       next := peek(stream, on-end-of-stream: #f);
     end while;
-    add!(optimized, current);
+    optimized := add(optimized, current);
   end while;
   optimized
 end function;
@@ -377,10 +378,10 @@ define function reset-to-zero
   for (i from 0 below program.size)
     if (i + 2 < program.size)
       let optimizable? = pattern = copy-sequence(program, start: i, end: i + 3);
-      add!(optimized, if (optimizable?) optimization else program[i] end);
+      optimized := add(optimized, if (optimizable?) optimization else program[i] end);
       when (optimizable?) i := i + 2 end;
     else
-      add!(optimized, program[i]);
+      optimized := add(optimized, program[i]);
     end if;
   end for;
   optimized
@@ -508,13 +509,6 @@ end;
 define method print-object
     (comment :: <comment>, s :: <stream>) => ()
   write-element(s, comment.comment-char)
-end;
-
-define method print-object
-    (program :: <program>, s :: <stream>) => ()
-  for (instruction in program)
-    print-object(instruction, s)
-  end
 end;
 
 ////////////////////////////////////////////////////////////////////////

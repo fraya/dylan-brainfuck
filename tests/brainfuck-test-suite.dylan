@@ -58,15 +58,14 @@ define test test-reset-to-zero ()
 
 define test test-group-instructions ()
   let program  = read-program("[[+++<<<>>>---]]");
-  let expected = make(<program>);
-  add!(expected, make(<jump-forward>));
-  add!(expected, make(<jump-forward>));
-  add!(expected, make(<memory-data-increment>, amount: 3));
-  add!(expected, make(<memory-pointer-decrement>, amount: 3));
-  add!(expected, make(<memory-pointer-increment>, amount: 3));
-  add!(expected, make(<memory-data-decrement>, amount: 3));
-  add!(expected, make(<jump-backward>));
-  add!(expected, make(<jump-backward>));
+  let expected = vector(make(<jump-forward>),
+			make(<jump-forward>),
+			make(<memory-data-increment>, amount: 3),
+			make(<memory-pointer-decrement>, amount: 3),
+			make(<memory-pointer-increment>, amount: 3),
+			make(<memory-data-decrement>, amount: 3),
+			make(<jump-backward>),
+			make(<jump-backward>));
   assert-equal(expected, group-instructions(program));			    
 end;
 
