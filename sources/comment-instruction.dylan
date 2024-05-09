@@ -3,7 +3,7 @@ Synopsis: Comment instruction
 Author: Fernando Raya
 Copyright: GPLv3
 
-define class <comment> (<instruction>)
+define sealed class <comment> (<instruction>)
   inherited slot instruction-symbol = '#';
 end;
 

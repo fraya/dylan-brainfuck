@@ -9,16 +9,16 @@ Copyright: GPLv3
 //
 ////////////////////////////////////////////////////////////////////////
 
-define abstract class <jump-instruction> (<instruction>)
+define sealed abstract class <jump-instruction> (<instruction>)
   slot jump-address :: false-or(<program-pointer>) = #f,
     init-keyword: address:;
 end;
 
-define class <jump-forward>  (<jump-instruction>)
+define sealed class <jump-forward>  (<jump-instruction>)
   inherited slot instruction-symbol = '[';
 end;
 
-define class <jump-backward> (<jump-instruction>)
+define sealed class <jump-backward> (<jump-instruction>)
   inherited slot instruction-symbol = ']';
 end;
 
@@ -28,7 +28,7 @@ end;
 //
 ////////////////////////////////////////////////////////////////////////
 
-define method execute
+define sealed method execute
     (jump :: <jump-forward>, bf :: <interpreter>) => ()
   local
     method find-address(bf)
@@ -50,8 +50,8 @@ define method execute
     bf.program-pointer := jump.jump-address | find-address(bf)
   end;
 end execute;
-
-define method execute
+  
+define sealed method execute
     (jump :: <jump-backward>, bf :: <interpreter>) => ()
   local
     method find-address(bf)
@@ -73,6 +73,9 @@ define method execute
     bf.program-pointer := jump.jump-address | find-address(bf)
   end;
 end execute;
+
+define sealed domain execute (<jump-forward>, <interpreter>);
+define sealed domain execute (<jump-backward>, <interpreter>);
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -99,3 +102,5 @@ define method \=
  => (equals? :: <boolean>)
   next-method() & this.jump-address = that.jump-address
 end;
+
+define sealed domain \= (<jump-instruction>, <jump-instruction>);

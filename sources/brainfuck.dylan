@@ -4,7 +4,7 @@ Author: Fernando Raya
 Copyright: GPLv3
 
 
-define class <interpreter> (<object>)
+define sealed class <interpreter> (<object>)
   slot program-pointer :: <program-pointer> = 0,
     init-keyword: program-pointer:;
   constant slot interpreter-program :: <program>,
@@ -14,12 +14,12 @@ define class <interpreter> (<object>)
   constant virtual slot current-instruction :: <instruction>;
 end;
 
-define method current-instruction
+define inline method current-instruction
     (interpreter :: <interpreter>) => (instruction :: <instruction>)
   interpreter.interpreter-program[interpreter.program-pointer]
 end;
 
-define method instruction-at
+define inline method instruction-at
     (interpreter :: <interpreter>, index :: <program-pointer>)
  => (instruction :: <instruction>)
   interpreter.interpreter-program[index]
@@ -180,3 +180,6 @@ define method \=
  => (equals? :: <boolean>)
    next-method()
  end;
+
+define sealed domain \= (<instruction>, <instruction>);
+define sealed domain \= (<program>, <program>);

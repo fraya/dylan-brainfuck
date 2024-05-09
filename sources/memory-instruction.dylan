@@ -9,34 +9,34 @@ Copyright: GPLv3
 //
 ////////////////////////////////////////////////////////////////////////
 
-define abstract class <memory-instruction> (<instruction>)
+define sealed abstract class <memory-instruction> (<instruction>)
   slot instruction-amount :: <integer> = 1,
     init-keyword: amount:;
 end;
 
-define abstract class <memory-data-instruction> (<memory-instruction>)
+define sealed abstract class <memory-data-instruction> (<memory-instruction>)
 end;
 
-define abstract class <memory-pointer-instruction> (<memory-instruction>)
+define sealed abstract class <memory-pointer-instruction> (<memory-instruction>)
 end;
 
-define class <memory-data-increment> (<memory-data-instruction>)
+define sealed class <memory-data-increment> (<memory-data-instruction>)
   inherited slot instruction-symbol = '+';
 end;
 
-define class <memory-data-decrement> (<memory-data-instruction>)
+define sealed class <memory-data-decrement> (<memory-data-instruction>)
   inherited slot instruction-symbol = '-';
 end;
 
-define class <reset-to-zero> (<memory-data-instruction>)
+define sealed class <reset-to-zero> (<memory-data-instruction>)
   inherited slot instruction-symbol = 'Z';
 end;
 
-define class <memory-pointer-increment> (<memory-pointer-instruction>)
+define sealed class <memory-pointer-increment> (<memory-pointer-instruction>)
   inherited slot instruction-symbol = '>';
 end;
 
-define class <memory-pointer-decrement> (<memory-pointer-instruction>)
+define sealed class <memory-pointer-decrement> (<memory-pointer-instruction>)
   inherited slot instruction-symbol = '<';
 end;
 
@@ -75,6 +75,11 @@ define method execute
   bf.interpreter-memory.memory-item := 0
 end;
 
+define sealed domain execute (<memory-data-increment>, <interpreter>);
+define sealed domain execute (<memory-data-decrement>, <interpreter>);
+define sealed domain execute (<memory-pointer-increment>, <interpreter>);
+define sealed domain execute (<memory-pointer-decrement>, <interpreter>);
+
 ////////////////////////////////////////////////////////////////////////
 //
 // Print memory instructions
@@ -101,3 +106,5 @@ define method \=
       object-class(this) = object-class(that)
     & this.instruction-amount = that.instruction-amount
 end;
+
+define sealed domain \= (<memory-data-instruction>, <memory-data-instruction>);

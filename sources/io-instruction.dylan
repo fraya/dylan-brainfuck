@@ -9,14 +9,14 @@ Copyright: GPLv3
 //
 ////////////////////////////////////////////////////////////////////////
 
-define abstract class <io-instruction> (<instruction>)
+define sealed abstract class <io-instruction> (<instruction>)
 end;
 
-define class <input> (<io-instruction>)
+define sealed class <input> (<io-instruction>)
   inherited slot instruction-symbol = ',';
 end;
 
-define class <output> (<io-instruction>)
+define sealed class <output> (<io-instruction>)
   inherited slot instruction-symbol = '.';
 end;
 
@@ -36,3 +36,6 @@ define method execute
     (instruction :: <input>, bf :: <interpreter>) => ()
   error("Not implemented yet")
 end;
+
+define sealed domain execute (<output>, <interpreter>);
+define sealed domain execute (<input>, <interpreter>);
