@@ -7,13 +7,13 @@ define constant $memory-size
   = 30000;
 
 define constant <memory-cell>
-  = limited(<integer>);
+  = <integer>;
 
 define constant <memory-cells>
   = limited(<vector>, of: <memory-cell>, size: $memory-size);
 
 define constant <memory-pointer>
-  = limited(<integer>, min: 0, max: $memory-size);
+  = <integer>;
 
 define class <memory> (<object>)
   constant slot memory-cells :: <memory-cells> = make(<memory-cells>, fill: 0),
