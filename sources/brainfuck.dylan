@@ -10,8 +10,7 @@ define sealed class <bf> (<object>)
     init-keyword: memory-pointer:;
   constant slot bf-program :: <program>,
     required-init-keyword: program:;
-  constant slot bf-memory :: <memory>
-    = make(<memory>, fill: 0, size: $default-memory-size),
+  constant slot bf-memory :: <memory>,
     init-keyword: memory:;
 end;
 
@@ -36,8 +35,16 @@ define generic bf-memory
 define generic execute
   (instruction :: <instruction>, bf :: <bf>) => ();
 
-define generic run!
-  (object :: <object>) => (bf :: <bf>);
+define inline function forth!
+    (bf :: <bf>) => (pp :: <program-pointer>)
+  bf.bf-pp := bf.bf-pp + 1;
+end;
+
+define inline function perform!
+    (bf :: <bf>) => (bf :: <bf>)
+  execute(bf.bf-program[bf.bf-pp], bf);
+  bf
+end;
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -45,18 +52,19 @@ define generic run!
 //
 ////////////////////////////////////////////////////////////////////////
 
+define generic run!
+  (object :: <object>) => (bf :: <bf>);
+
 define method run!
-    (program :: <program>)
- => (bf :: <bf>)
-  let bf = make(<bf>, program: program);
-  run!(bf)
+    (program :: <program>) => (bf :: <bf>)
+  let memory = make(<memory>, size: $default-memory-size);
+  run!(make(<bf>, program: program, memory: memory))
 end;
 
 define method run!
     (bf :: <bf>) => (bf :: <bf>)
   while (bf.bf-pp < bf.bf-program.size)
-    execute(bf.bf-program[bf.bf-pp], bf);
-    bf.bf-pp := bf.bf-pp + 1
+    forth!(perform!(bf))
   end;
   bf
 end;
