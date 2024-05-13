@@ -8,7 +8,7 @@ Module: brainfuck-test-suite
 
 define test memory-data-increment-test ()
   let bf = run(read-program("+"));
-  expect-equal(1, bf.program-pointer);
+  expect-equal(1, bf.bf-pp);
   expect-equal(1, bf.bf-memory[bf.bf-mp]);
 end test;
 

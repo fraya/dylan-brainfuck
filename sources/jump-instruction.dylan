@@ -35,7 +35,7 @@ define sealed method execute
       block (address)
 	let level = 1;
 	let jump  = bf.current-instruction;
-	for (index from bf.program-pointer + 1 below bf.bf-program.size)
+	for (index from bf.bf-pp + 1 below bf.bf-program.size)
 	  select (object-class(instruction-at(bf, index)))
 	    <jump-forward>  => level := level + 1;
 	    <jump-backward> => level := level - 1;
@@ -47,7 +47,7 @@ define sealed method execute
       end block;
     end method;
   when (bf.bf-memory[bf.bf-mp] = 0)
-    bf.program-pointer := jump.jump-address | find-address(bf)
+    bf.bf-pp := jump.jump-address | find-address(bf)
   end;
 end execute;
   
@@ -58,7 +58,7 @@ define sealed method execute
       block (address)
 	let level = 1;
 	let jump  = bf.current-instruction;
-	for (index from bf.program-pointer - 1 to 0 by -1)
+	for (index from bf.bf-pp - 1 to 0 by -1)
 	  select (object-class(instruction-at(bf, index)))
 	    <jump-forward>  => level := level - 1;
 	    <jump-backward> => level := level + 1;
@@ -70,7 +70,7 @@ define sealed method execute
       end block;
     end method;
   when (bf.bf-memory[bf.bf-mp] ~= 0)
-    bf.program-pointer := jump.jump-address | find-address(bf)
+    bf.bf-pp := jump.jump-address | find-address(bf)
   end;
 end execute;
 

@@ -35,7 +35,7 @@ define module brainfuck
 
   create
     <bf>,
-    program-pointer;
+    bf-pp;
   
 end module;
 

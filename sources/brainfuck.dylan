@@ -16,7 +16,7 @@ define constant <memory-pointer>
   = <integer>;
 
 define sealed class <bf> (<object>)
-  slot program-pointer :: <program-pointer> = 0,
+  slot bf-pp :: <program-pointer> = 0,
     init-keyword: program-pointer:;
   slot bf-mp :: <memory-pointer> = 0,
     init-keyword: memory-pointer:;
@@ -29,7 +29,7 @@ end;
 
 define inline method current-instruction
     (bf :: <bf>) => (instruction :: <instruction>)
-  bf.bf-program[bf.program-pointer]
+  bf.bf-program[bf.bf-pp]
 end;
 
 define inline method instruction-at
@@ -40,12 +40,12 @@ end;
 
 define inline method program-not-finished?
     (bf :: <bf>) => (finished? :: <boolean>)
-  bf.program-pointer < bf.bf-program.size
+  bf.bf-pp < bf.bf-program.size
 end;
 
 define inline method program-forth
     (bf :: <bf>) => (address :: <program-pointer>)
-  bf.program-pointer := bf.program-pointer + 1
+  bf.bf-pp := bf.bf-pp + 1
 end;
 
 
@@ -183,7 +183,7 @@ define method print-object
     (bf :: <bf>, s :: <stream>) => ()
   print-object(bf.bf-memory, s);
   format(s," PP:%03d '%='",
-	 bf.program-pointer,
+	 bf.bf-pp,
 	 bf.current-instruction);
 end;
 
