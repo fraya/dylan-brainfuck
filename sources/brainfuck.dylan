@@ -3,10 +3,23 @@ Synopsis: Brainfuck core
 Author: Fernando Raya
 Copyright: GPLv3
 
+define constant $memory-size
+  = 30000;
+
+define constant <memory-cell>
+  = <integer>;
+
+define constant <memory>
+  = limited(<vector>, of: <memory-cell>, size: $memory-size);
+
+define constant <memory-pointer>
+  = <integer>;
 
 define sealed class <interpreter> (<object>)
   slot program-pointer :: <program-pointer> = 0,
     init-keyword: program-pointer:;
+  slot mp :: <memory-pointer> = 0,
+    init-keyword: memory-pointer:;
   constant slot interpreter-program :: <program>,
     required-init-keyword: program:;
   constant slot interpreter-memory :: <memory> = make(<memory>, fill: 0),

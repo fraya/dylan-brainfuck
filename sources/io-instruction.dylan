@@ -28,7 +28,7 @@ end;
 
 define method execute
     (instruction :: <output>, bf :: <interpreter>) => ()
-  format-out("%c", as(<character>, bf.interpreter-memory.memory-item));
+  format-out("%c", as(<character>, bf.interpreter-memory[bf.mp]));
   force-out();
 end;
 

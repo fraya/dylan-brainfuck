@@ -49,30 +49,30 @@ end;
 define method execute
     (instruction :: <memory-data-increment>, bf :: <interpreter>)
  => ()
-  memory-increment(bf.interpreter-memory, instruction.instruction-amount)
+  bf.interpreter-memory[bf.mp] := bf.interpreter-memory[bf.mp] + instruction.instruction-amount
 end;
 
 define method execute
     (instruction :: <memory-data-decrement>, bf :: <interpreter>)
  => ()
-  memory-decrement(bf.interpreter-memory, instruction.instruction-amount)
+  bf.interpreter-memory[bf.mp] := bf.interpreter-memory[bf.mp] - instruction.instruction-amount
 end;
 
 define method execute
     (instruction :: <memory-pointer-increment>, bf :: <interpreter>)
  => ()
-  memory-forth(bf.interpreter-memory, instruction.instruction-amount)
+  bf.mp := bf.mp + instruction.instruction-amount
 end;
 
 define method execute
     (instruction :: <memory-pointer-decrement>, bf :: <interpreter>)
  => ()
-  memory-back(bf.interpreter-memory, instruction.instruction-amount);
+  bf.mp := bf.mp - instruction.instruction-amount
 end;
 
 define method execute
     (instruction :: <reset-to-zero>, bf :: <interpreter>) => ()
-  bf.interpreter-memory.memory-item := 0
+  bf.interpreter-memory[bf.mp] := 0
 end;
 
 define sealed domain execute (<memory-data-increment>, <interpreter>);

@@ -18,8 +18,7 @@ define module brainfuck
   
   create
     <memory>,
-    memory-pointer,
-    memory-item;
+    <memory-pointer>;
 
   // Instructions
   
@@ -60,18 +59,13 @@ define module brainfuck-impl
   
   export
     $memory-size,
-    <memory-cell>,
-    <memory-cells>,
-    <memory-pointer>,
-    memory-increment,
-    memory-decrement,
-    memory-forth,
-    memory-back;
-
+    <memory-cell>;
+  
   // Memory instructions 
   
   export
     interpreter-memory,
+    mp,
     <memory-instruction>,
     instruction-amount,
     <memory-data-instruction>,

@@ -46,7 +46,7 @@ define sealed method execute
 	error("Mismatched jump: %=", jump);
       end block;
     end method;
-  when (bf.interpreter-memory.memory-item = 0)
+  when (bf.interpreter-memory[bf.mp] = 0)
     bf.program-pointer := jump.jump-address | find-address(bf)
   end;
 end execute;
@@ -69,7 +69,7 @@ define sealed method execute
 	error("Mismatched jump: %=", jump);
       end block;
     end method;
-  when (bf.interpreter-memory.memory-item ~= 0)
+  when (bf.interpreter-memory[bf.mp] ~= 0)
     bf.program-pointer := jump.jump-address | find-address(bf)
   end;
 end execute;
