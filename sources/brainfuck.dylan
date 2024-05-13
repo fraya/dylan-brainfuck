@@ -22,22 +22,33 @@ end;
 
 ////////////////////////////////////////////////////////////////////////
 //
-// Execute methods
+// Brainfuck interface
 //
 ////////////////////////////////////////////////////////////////////////
+
+define generic bf-pp
+  (bf :: <bf>) => (pp :: <program-pointer>);
+
+define generic bf-mp
+  (bf :: <bf>) => (mp :: <memory-pointer>);
+
+define generic bf-program
+  (bf :: <bf>) => (program :: <program>);
+
+define generic bf-memory
+  (bf :: <bf>) => (memory :: <memory>);
 
 define generic execute
   (instruction :: <instruction>, bf :: <bf>) => ();
 
+define generic run!
+  (object :: <object>) => (bf :: <bf>);
 
 ////////////////////////////////////////////////////////////////////////
 //
 // 'run' methods to execute a program in a brainfuck machine
 //
 ////////////////////////////////////////////////////////////////////////
-
-define generic run!
-  (object :: <object>) => (bf :: <bf>);
 
 define method run!
     (program :: <program>)
