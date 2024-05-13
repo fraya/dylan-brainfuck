@@ -15,12 +15,6 @@ define sealed class <bf> (<object>)
     init-keyword: memory:;
 end;
 
-define inline method instruction-at
-    (bf :: <bf>, index :: <program-pointer>)
- => (instruction :: <instruction>)
-  bf.bf-program[index]
-end;
-
 define inline method program-not-finished?
     (bf :: <bf>) => (finished? :: <boolean>)
   bf.bf-pp < bf.bf-program.size

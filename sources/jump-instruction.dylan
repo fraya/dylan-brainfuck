@@ -36,7 +36,8 @@ define sealed method execute
 	let level = 1;
 	let jump  = bf.bf-program[bf.bf-pp];
 	for (index from bf.bf-pp + 1 below bf.bf-program.size)
-	  select (object-class(instruction-at(bf, index)))
+	  let instruction = bf.bf-program[index];
+	  select (object-class(instruction))
 	    <jump-forward>  => level := level + 1;
 	    <jump-backward> => level := level - 1;
 	    otherwise       => ;
@@ -59,7 +60,8 @@ define sealed method execute
 	let level = 1;
 	let jump  = bf.bf-program[bf.bf-pp];
 	for (index from bf.bf-pp - 1 to 0 by -1)
-	  select (object-class(instruction-at(bf, index)))
+	  let instruction = bf.bf-program[index];
+	  select (object-class(instruction))
 	    <jump-forward>  => level := level - 1;
 	    <jump-backward> => level := level + 1;
 	    otherwise       => ;

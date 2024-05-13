@@ -58,7 +58,7 @@ define module brainfuck-impl
   // Memory
   
   export
-    $memory-size,
+    $default-memory-size,
     <memory-cell>;
   
   // Memory instructions 
@@ -79,7 +79,6 @@ define module brainfuck-impl
   // Program exports
   
   export
-    instruction-at,
     program-not-finished?;
   
   // Jumps
