@@ -53,7 +53,7 @@ define module brainfuck-impl
 
   // Instruction
   export
-    parse-character;
+    parse-instruction;
   
   // Memory
   

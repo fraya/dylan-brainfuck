@@ -31,7 +31,7 @@ end function;
 
 define function reset-to-zero
     (origin :: <program>) => (optimized :: <program>)
-  let pattern      = read-program("[-]");
+  let pattern      = as(<program>, "[-]");
   let optimization = make(<reset-to-zero>); 
   let optimized    = make(<program>);
   let _size = origin.size;

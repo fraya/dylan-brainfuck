@@ -9,6 +9,14 @@ define constant <program-pointer>
 define constant <program>
   = limited(<vector>, of: <instruction>);
 
+define method \=
+    (this :: <program>, that :: <program>)
+ => (equals? :: <boolean>)
+   next-method()
+end;
+
+define sealed domain \= (<program>, <program>);
+
 define constant $brainfuck-table
   = instruction-table(<memory-pointer-increment>,
 		      <memory-pointer-decrement>,
@@ -20,36 +28,22 @@ define constant $brainfuck-table
 		      <jump-backward>,
 		      <reset-to-zero>);
 
-define function parse-character
+define function parse-instruction
     (char :: <character>) => (instruction :: <instruction>)
   let type = element($brainfuck-table, char, default: <comment>);
   make(type)
 end;
 
-define generic read-program
-  (object :: <object>) => (program :: <program>);
+define method as
+    (type == <program>, string :: <string>)
+ => (program :: <program>)
+  map-as(<program>, parse-instruction, string)
+end as;
 
-define method read-program
-    (sequence :: <sequence>) => (program :: <program>)
-  map-as(<program>, parse-character, sequence)
+define function read-program
+    (filename :: <string>) => (program :: <program>)
+  with-open-file (fs = filename, element-type: <byte-character>)
+    as(<program>, stream-contents(fs))
+  end
 end;
 
-define method read-program
-    (stream :: <stream>) => (program :: <program>)
-  read-program(read-to-end(stream))
-end;
-
-define method read-program
-    (locator :: <locator>) => (program :: <program>)  
-  with-open-file (fs = locator, element-type: <byte-character>)
-    read-program(fs)
-  end;
-end;
-
-define method \=
-    (this :: <program>, that :: <program>)
- => (equals? :: <boolean>)
-   next-method()
-end;
-
-define sealed domain \= (<program>, <program>);

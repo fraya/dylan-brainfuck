@@ -25,8 +25,7 @@ define function main
       optimization-level := string-to-integer(arguments[1]);
     end;
 
-    let locator = as(<file-locator>, program-name);
-    let program = read-program(locator);
+    let program = read-program(program-name);
     let optimized = optimize-program(program, optimization-level);
     run!(optimized);
     format-out("\n");

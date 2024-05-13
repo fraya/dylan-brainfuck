@@ -7,7 +7,7 @@ Module: brainfuck-test-suite
 //////////////////////////////////////////////////////////////////////////////
 
 define test memory-data-increment-test ()
-  let bf = run!(read-program("+"));
+  let bf = run!(as(<program>, "+"));
   expect-equal(1, bf.bf-pp);
   expect-equal(1, bf.bf-memory[bf.bf-mp]);
 end test;
@@ -23,14 +23,14 @@ end suite;
 //////////////////////////////////////////////////////////////////////////////
 
 define test test-parse-instructions ()
-  expect-instance?(<memory-data-increment>, parse-character('+'));
-  expect-instance?(<memory-data-decrement>, parse-character('-'));
-  expect-instance?(<memory-pointer-increment>, parse-character('>'));
-  expect-instance?(<memory-pointer-decrement>, parse-character('<'));
-  expect-instance?(<jump-forward>, parse-character('['));
-  expect-instance?(<jump-backward>, parse-character(']'));
-  expect-instance?(<input>, parse-character(','));
-  expect-instance?(<output>, parse-character('.'));
+  expect-instance?(<memory-data-increment>, parse-instruction('+'));
+  expect-instance?(<memory-data-decrement>, parse-instruction('-'));
+  expect-instance?(<memory-pointer-increment>, parse-instruction('>'));
+  expect-instance?(<memory-pointer-decrement>, parse-instruction('<'));
+  expect-instance?(<jump-forward>, parse-instruction('['));
+  expect-instance?(<jump-backward>, parse-instruction(']'));
+  expect-instance?(<input>, parse-instruction(','));
+  expect-instance?(<output>, parse-instruction('.'));
 end;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -40,14 +40,14 @@ end;
 //////////////////////////////////////////////////////////////////////////////
 
 define test test-reset-to-zero ()
-  let source    = read-program("[-]");
+  let source    = as(<program>, "[-]");
   let optimized = reset-to-zero(source);
-  let expected  = read-program("Z");
+  let expected  = vector(make(<reset-to-zero>));
   assert-equal(expected, optimized, "Replace '[-]' with 'Z'");
  end;
 
 define test test-group-instructions ()
-  let program  = read-program("[[+++<<<>>>---]]");
+  let program  = as(<program>, "[[+++<<<>>>---]]");
   let expected = vector(make(<jump-forward>),
 			make(<jump-forward>),
 			make(<memory-data-increment>, amount: 3),
@@ -60,7 +60,7 @@ define test test-group-instructions ()
 end;
 
 define test test-precalculate-jumps ()
-  let program   = read-program("[++++]");
+  let program   = as(<program>, "[++++]");
   let optimized = precalculate-jumps(program);
   assert-equal(make(<jump-forward>, address: 5), optimized.first); 
 end;
