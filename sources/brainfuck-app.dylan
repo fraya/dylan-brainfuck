@@ -1,14 +1,5 @@
 Module: brainfuck-app
 
-define method run-program
-    (program-name :: <string>, optimization-level :: <integer>)
- => (bf :: <bf>)
-  let locator = as(<file-locator>, program-name);
-  let program = read-program(locator);
-  let optimized = optimize-program(program, optimization-level);
-  run!(optimized);
-end;
-
 define function main
   (name :: <string>, arguments :: <vector>)  
   if (arguments.size < 1)
@@ -34,7 +25,10 @@ define function main
       optimization-level := string-to-integer(arguments[1]);
     end;
 
-    run-program(program-name, optimization-level);
+    let locator = as(<file-locator>, program-name);
+    let program = read-program(locator);
+    let optimized = optimize-program(program, optimization-level);
+    run!(optimized);
     format-out("\n");
   exception (error :: <error>)
     format-err("Error: %=", error);
