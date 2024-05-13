@@ -2,7 +2,7 @@ Module: brainfuck-app
 
 define method run-program
     (program-name :: <string>, optimization-level :: <integer>)
- => (bf :: <interpreter>)
+ => (bf :: <bf>)
   let locator = as(<file-locator>, program-name);
   let program = read-program(locator);
   let optimized = optimize-program(program, optimization-level);

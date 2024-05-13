@@ -47,38 +47,38 @@ end;
 ////////////////////////////////////////////////////////////////////////
 
 define method execute
-    (instruction :: <memory-data-increment>, bf :: <interpreter>)
+    (instruction :: <memory-data-increment>, bf :: <bf>)
  => ()
-  bf.interpreter-memory[bf.mp] := bf.interpreter-memory[bf.mp] + instruction.instruction-amount
+  bf.bf-memory[bf.bf-mp] := bf.bf-memory[bf.bf-mp] + instruction.instruction-amount
 end;
 
 define method execute
-    (instruction :: <memory-data-decrement>, bf :: <interpreter>)
+    (instruction :: <memory-data-decrement>, bf :: <bf>)
  => ()
-  bf.interpreter-memory[bf.mp] := bf.interpreter-memory[bf.mp] - instruction.instruction-amount
+  bf.bf-memory[bf.bf-mp] := bf.bf-memory[bf.bf-mp] - instruction.instruction-amount
 end;
 
 define method execute
-    (instruction :: <memory-pointer-increment>, bf :: <interpreter>)
+    (instruction :: <memory-pointer-increment>, bf :: <bf>)
  => ()
-  bf.mp := bf.mp + instruction.instruction-amount
+  bf.bf-mp := bf.bf-mp + instruction.instruction-amount
 end;
 
 define method execute
-    (instruction :: <memory-pointer-decrement>, bf :: <interpreter>)
+    (instruction :: <memory-pointer-decrement>, bf :: <bf>)
  => ()
-  bf.mp := bf.mp - instruction.instruction-amount
+  bf.bf-mp := bf.bf-mp - instruction.instruction-amount
 end;
 
 define method execute
-    (instruction :: <reset-to-zero>, bf :: <interpreter>) => ()
-  bf.interpreter-memory[bf.mp] := 0
+    (instruction :: <reset-to-zero>, bf :: <bf>) => ()
+  bf.bf-memory[bf.bf-mp] := 0
 end;
 
-define sealed domain execute (<memory-data-increment>, <interpreter>);
-define sealed domain execute (<memory-data-decrement>, <interpreter>);
-define sealed domain execute (<memory-pointer-increment>, <interpreter>);
-define sealed domain execute (<memory-pointer-decrement>, <interpreter>);
+define sealed domain execute (<memory-data-increment>, <bf>);
+define sealed domain execute (<memory-data-decrement>, <bf>);
+define sealed domain execute (<memory-pointer-increment>, <bf>);
+define sealed domain execute (<memory-pointer-decrement>, <bf>);
 
 ////////////////////////////////////////////////////////////////////////
 //

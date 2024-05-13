@@ -34,7 +34,7 @@ define module brainfuck
     optimize-program;
 
   create
-    <interpreter>,
+    <bf>,
     program-pointer;
   
 end module;
@@ -64,8 +64,8 @@ define module brainfuck-impl
   // Memory instructions 
   
   export
-    interpreter-memory,
-    mp,
+    bf-memory,
+    bf-mp,
     <memory-instruction>,
     instruction-amount,
     <memory-data-instruction>,

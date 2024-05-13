@@ -9,7 +9,7 @@ Module: brainfuck-test-suite
 define test memory-data-increment-test ()
   let bf = run(read-program("+"));
   expect-equal(1, bf.program-pointer);
-  expect-equal(1, bf.interpreter-memory[bf.mp]);
+  expect-equal(1, bf.bf-memory[bf.bf-mp]);
 end test;
 
 define suite instruction-test-suite ()

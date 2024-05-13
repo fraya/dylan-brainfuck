@@ -15,37 +15,37 @@ define constant <memory>
 define constant <memory-pointer>
   = <integer>;
 
-define sealed class <interpreter> (<object>)
+define sealed class <bf> (<object>)
   slot program-pointer :: <program-pointer> = 0,
     init-keyword: program-pointer:;
-  slot mp :: <memory-pointer> = 0,
+  slot bf-mp :: <memory-pointer> = 0,
     init-keyword: memory-pointer:;
-  constant slot interpreter-program :: <program>,
+  constant slot bf-program :: <program>,
     required-init-keyword: program:;
-  constant slot interpreter-memory :: <memory> = make(<memory>, fill: 0),
+  constant slot bf-memory :: <memory> = make(<memory>, fill: 0),
     init-keyword: memory:;
   constant virtual slot current-instruction :: <instruction>;
 end;
 
 define inline method current-instruction
-    (interpreter :: <interpreter>) => (instruction :: <instruction>)
-  interpreter.interpreter-program[interpreter.program-pointer]
+    (bf :: <bf>) => (instruction :: <instruction>)
+  bf.bf-program[bf.program-pointer]
 end;
 
 define inline method instruction-at
-    (interpreter :: <interpreter>, index :: <program-pointer>)
+    (bf :: <bf>, index :: <program-pointer>)
  => (instruction :: <instruction>)
-  interpreter.interpreter-program[index]
+  bf.bf-program[index]
 end;
 
 define inline method program-not-finished?
-    (interpreter :: <interpreter>) => (finished? :: <boolean>)
-  interpreter.program-pointer < interpreter.interpreter-program.size
+    (bf :: <bf>) => (finished? :: <boolean>)
+  bf.program-pointer < bf.bf-program.size
 end;
 
 define inline method program-forth
-    (interpreter :: <interpreter>) => (address :: <program-pointer>)
-  interpreter.program-pointer := interpreter.program-pointer + 1
+    (bf :: <bf>) => (address :: <program-pointer>)
+  bf.program-pointer := bf.program-pointer + 1
 end;
 
 
@@ -56,7 +56,7 @@ end;
 ////////////////////////////////////////////////////////////////////////
 
 define generic execute
-  (instruction :: <instruction>, bf :: <interpreter>) => ();
+  (instruction :: <instruction>, bf :: <bf>) => ();
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -66,17 +66,17 @@ define generic execute
 ////////////////////////////////////////////////////////////////////////
 
 define generic run
-  (object :: <object>) => (bf :: <interpreter>);
+  (object :: <object>) => (bf :: <bf>);
 
 define method run
     (program :: <program>)
- => (bf :: <interpreter>)
-  let bf = make(<interpreter>, program: program);
+ => (bf :: <bf>)
+  let bf = make(<bf>, program: program);
   run(bf)
 end;
 
 define method run
-    (bf :: <interpreter>) => (bf :: <interpreter>)
+    (bf :: <bf>) => (bf :: <bf>)
   while (program-not-finished?(bf))
     execute(bf.current-instruction, bf);
     program-forth(bf);
@@ -180,8 +180,8 @@ end function optimize-program;
 ////////////////////////////////////////////////////////////////////////
 
 define method print-object
-    (bf :: <interpreter>, s :: <stream>) => ()
-  print-object(bf.interpreter-memory, s);
+    (bf :: <bf>, s :: <stream>) => ()
+  print-object(bf.bf-memory, s);
   format(s," PP:%03d '%='",
 	 bf.program-pointer,
 	 bf.current-instruction);

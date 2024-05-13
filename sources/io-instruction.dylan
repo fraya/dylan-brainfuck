@@ -27,15 +27,15 @@ end;
 ////////////////////////////////////////////////////////////////////////
 
 define method execute
-    (instruction :: <output>, bf :: <interpreter>) => ()
-  format-out("%c", as(<character>, bf.interpreter-memory[bf.mp]));
+    (instruction :: <output>, bf :: <bf>) => ()
+  format-out("%c", as(<character>, bf.bf-memory[bf.bf-mp]));
   force-out();
 end;
 
 define method execute
-    (instruction :: <input>, bf :: <interpreter>) => ()
+    (instruction :: <input>, bf :: <bf>) => ()
   error("Not implemented yet")
 end;
 
-define sealed domain execute (<output>, <interpreter>);
-define sealed domain execute (<input>, <interpreter>);
+define sealed domain execute (<output>, <bf>);
+define sealed domain execute (<input>, <bf>);

@@ -29,13 +29,13 @@ end;
 ////////////////////////////////////////////////////////////////////////
 
 define sealed method execute
-    (jump :: <jump-forward>, bf :: <interpreter>) => ()
+    (jump :: <jump-forward>, bf :: <bf>) => ()
   local
     method find-address(bf)
       block (address)
 	let level = 1;
 	let jump  = bf.current-instruction;
-	for (index from bf.program-pointer + 1 below bf.interpreter-program.size)
+	for (index from bf.program-pointer + 1 below bf.bf-program.size)
 	  select (object-class(instruction-at(bf, index)))
 	    <jump-forward>  => level := level + 1;
 	    <jump-backward> => level := level - 1;
@@ -46,13 +46,13 @@ define sealed method execute
 	error("Mismatched jump: %=", jump);
       end block;
     end method;
-  when (bf.interpreter-memory[bf.mp] = 0)
+  when (bf.bf-memory[bf.bf-mp] = 0)
     bf.program-pointer := jump.jump-address | find-address(bf)
   end;
 end execute;
   
 define sealed method execute
-    (jump :: <jump-backward>, bf :: <interpreter>) => ()
+    (jump :: <jump-backward>, bf :: <bf>) => ()
   local
     method find-address(bf)
       block (address)
@@ -69,13 +69,13 @@ define sealed method execute
 	error("Mismatched jump: %=", jump);
       end block;
     end method;
-  when (bf.interpreter-memory[bf.mp] ~= 0)
+  when (bf.bf-memory[bf.bf-mp] ~= 0)
     bf.program-pointer := jump.jump-address | find-address(bf)
   end;
 end execute;
 
-define sealed domain execute (<jump-forward>, <interpreter>);
-define sealed domain execute (<jump-backward>, <interpreter>);
+define sealed domain execute (<jump-forward>, <bf>);
+define sealed domain execute (<jump-backward>, <bf>);
 
 ////////////////////////////////////////////////////////////////////////
 //

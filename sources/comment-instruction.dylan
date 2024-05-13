@@ -8,6 +8,6 @@ define sealed class <comment> (<instruction>)
 end;
 
 define method execute
-    (instruction :: <comment>, bf :: <interpreter>) => ()
+    (instruction :: <comment>, bf :: <bf>) => ()
   // do nothing
 end;
