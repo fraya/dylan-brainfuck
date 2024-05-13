@@ -43,12 +43,6 @@ define inline method program-not-finished?
   bf.bf-pp < bf.bf-program.size
 end;
 
-define inline method program-forth
-    (bf :: <bf>) => (address :: <program-pointer>)
-  bf.bf-pp := bf.bf-pp + 1
-end;
-
-
 ////////////////////////////////////////////////////////////////////////
 //
 // Execute methods
@@ -79,7 +73,7 @@ define method run
     (bf :: <bf>) => (bf :: <bf>)
   while (program-not-finished?(bf))
     execute(bf.current-instruction, bf);
-    program-forth(bf);
+    bf.bf-pp := bf.bf-pp + 1
   end;
   bf
 end;

@@ -81,8 +81,7 @@ define module brainfuck-impl
   export
     current-instruction,
     instruction-at,
-    program-not-finished?,
-    program-forth;
+    program-not-finished?;
   
   // Jumps
   
