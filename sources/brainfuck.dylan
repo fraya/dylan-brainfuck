@@ -66,12 +66,6 @@ define method run!
   bf
 end;
 
-////////////////////////////////////////////////////////////////////////
-//
-// Print objects
-//
-////////////////////////////////////////////////////////////////////////
-
 define method print-object
     (bf :: <bf>, s :: <stream>) => ()
   print-object(bf.bf-memory, s);
@@ -79,24 +73,3 @@ define method print-object
 	 bf.bf-pp,
 	 bf.bf-program[bf.bf-pp]);
 end;
-
-////////////////////////////////////////////////////////////////////////
-//
-//  Equal methods
-//
-////////////////////////////////////////////////////////////////////////
-
-define method \=
-    (this :: <instruction>, that :: <instruction>)
- => (equals? :: <boolean>)
-  object-class(this) = object-class(that)
-end;
-
-define method \=
-    (this :: <program>, that :: <program>)
- => (equals? :: <boolean>)
-   next-method()
- end;
-
-define sealed domain \= (<instruction>, <instruction>);
-define sealed domain \= (<program>, <program>);

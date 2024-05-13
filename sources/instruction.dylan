@@ -7,6 +7,14 @@ define abstract class <instruction> (<object>)
   constant each-subclass slot instruction-symbol :: <character>;
 end;
 
+define method \=
+    (this :: <instruction>, that :: <instruction>)
+ => (equals? :: <boolean>)
+  object-class(this) = object-class(that)
+end;
+
+define sealed domain \= (<instruction>, <instruction>);
+
 define method print-object
     (instruction :: <instruction>, stream :: <stream>) => ()
   write-element(stream, instruction.instruction-symbol)

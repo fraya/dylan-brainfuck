@@ -45,3 +45,11 @@ define method read-program
     read-program(fs)
   end;
 end;
+
+define method \=
+    (this :: <program>, that :: <program>)
+ => (equals? :: <boolean>)
+   next-method()
+end;
+
+define sealed domain \= (<program>, <program>);
