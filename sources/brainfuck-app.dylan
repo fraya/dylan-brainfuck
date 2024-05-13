@@ -6,7 +6,7 @@ define method run-program
   let locator = as(<file-locator>, program-name);
   let program = read-program(locator);
   let optimized = optimize-program(program, optimization-level);
-  run(optimized);
+  run!(optimized);
 end;
 
 define function main

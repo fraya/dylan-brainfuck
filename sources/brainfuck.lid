@@ -7,5 +7,6 @@ Files: library.dylan
        jump-instruction.dylan
        memory-instruction.dylan
        program.dylan
+       optimizations
        brainfuck.dylan
 Target-Type: dll
