@@ -92,8 +92,9 @@ define function reset-to-zero
   let pattern      = read-program("[-]");
   let optimization = make(<reset-to-zero>); 
   let optimized    = make(<program>);
-  for (i from 0 below origin.size)
-    if (i + 2 < origin.size)
+  let _size = origin.size;
+  for (i from 0 below _size)
+    if (i + 2 < _size)
       let optimizable? = pattern = copy-sequence(origin, start: i, end: i + 3);
       optimized := add(optimized, if (optimizable?) optimization else origin[i] end);
       when (optimizable?) i := i + 2 end;
