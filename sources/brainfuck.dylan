@@ -24,12 +24,6 @@ define sealed class <bf> (<object>)
     required-init-keyword: program:;
   constant slot bf-memory :: <memory> = make(<memory>, fill: 0),
     init-keyword: memory:;
-  constant virtual slot current-instruction :: <instruction>;
-end;
-
-define inline method current-instruction
-    (bf :: <bf>) => (instruction :: <instruction>)
-  bf.bf-program[bf.bf-pp]
 end;
 
 define inline method instruction-at
@@ -72,7 +66,7 @@ end;
 define method run
     (bf :: <bf>) => (bf :: <bf>)
   while (program-not-finished?(bf))
-    execute(bf.current-instruction, bf);
+    execute(bf.bf-program[bf.bf-pp], bf);
     bf.bf-pp := bf.bf-pp + 1
   end;
   bf
@@ -178,7 +172,7 @@ define method print-object
   print-object(bf.bf-memory, s);
   format(s," PP:%03d '%='",
 	 bf.bf-pp,
-	 bf.current-instruction);
+	 bf.bf-program[bf.bf-pp]);
 end;
 
 ////////////////////////////////////////////////////////////////////////

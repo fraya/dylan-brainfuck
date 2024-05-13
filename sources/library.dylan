@@ -79,7 +79,6 @@ define module brainfuck-impl
   // Program exports
   
   export
-    current-instruction,
     instruction-at,
     program-not-finished?;
   
