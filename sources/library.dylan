@@ -31,7 +31,7 @@ define module brainfuck
   create
     <program>,
     read-program,
-    run-brainfuck-program,
+    run,
     optimize-program;
 
   create

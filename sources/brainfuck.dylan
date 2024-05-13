@@ -35,22 +35,6 @@ define inline method program-forth
   interpreter.program-pointer := interpreter.program-pointer + 1
 end;
 
-define method run-brainfuck-program
-    (interpreter :: <interpreter>) => (bf :: <interpreter>)
-  while (program-not-finished?(interpreter))
-    // format-out("%=\n", interpreter); force-out();
-    execute(interpreter.current-instruction, interpreter);
-    program-forth(interpreter);
-  end;
-  interpreter
-end method run-brainfuck-program;
-
-define method run-brainfuck-program
-    (program :: <program>) => (bf :: <interpreter>)
-  let interpreter = make(<interpreter>, program: program);
-  run-brainfuck-program(interpreter)
-end;
-
 ////////////////////////////////////////////////////////////////////////
 //
 // Execute methods
@@ -59,6 +43,32 @@ end;
 
 define generic execute
   (instruction :: <instruction>, bf :: <interpreter>) => ();
+
+
+////////////////////////////////////////////////////////////////////////
+//
+// 'run' methods to execute a program in a brainfuck machine
+//
+////////////////////////////////////////////////////////////////////////
+
+define generic run
+  (object :: <object>) => (bf :: <interpreter>);
+
+define method run
+    (program :: <program>)
+ => (bf :: <interpreter>)
+  let bf = make(<interpreter>, program: program);
+  run(bf)
+end;
+
+define method run
+    (bf :: <interpreter>) => (bf :: <interpreter>)
+  while (program-not-finished?(bf))
+    execute(bf.current-instruction, bf);
+    program-forth(bf);
+  end;
+  bf
+end;
 
 ///////////////////////////////////////////////////////////////////////////////
 //

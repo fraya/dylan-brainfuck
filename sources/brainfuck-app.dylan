@@ -1,16 +1,12 @@
 Module: brainfuck-app
 
-define method run
-    (program :: <program>, optimization-level :: <integer>) => ()
-  let optimized = optimize-program(program, optimization-level);
-  let brainfuck = run-brainfuck-program(optimized);
-end;
-
-define method run
-    (program-name :: <string>, optimization-level :: <integer>) => ()
+define method run-program
+    (program-name :: <string>, optimization-level :: <integer>)
+ => (bf :: <interpreter>)
   let locator = as(<file-locator>, program-name);
   let program = read-program(locator);
-  run(program, optimization-level);
+  let optimized = optimize-program(program, optimization-level);
+  run(optimized);
 end;
 
 define function main
@@ -38,7 +34,7 @@ define function main
       optimization-level := string-to-integer(arguments[1]);
     end;
 
-    run(program-name, optimization-level);
+    run-program(program-name, optimization-level);
     format-out("\n");
   exception (error :: <error>)
     format-err("Error: %=", error);
