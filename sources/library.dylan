@@ -76,11 +76,6 @@ define module brainfuck-impl
     <memory-pointer-decrement>,
     <reset-to-zero>;
 
-  // Program exports
-  
-  export
-    program-not-finished?;
-  
   // Jumps
   
   export

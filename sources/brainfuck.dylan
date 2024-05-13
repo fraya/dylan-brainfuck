@@ -15,11 +15,6 @@ define sealed class <bf> (<object>)
     init-keyword: memory:;
 end;
 
-define inline method program-not-finished?
-    (bf :: <bf>) => (finished? :: <boolean>)
-  bf.bf-pp < bf.bf-program.size
-end;
-
 ////////////////////////////////////////////////////////////////////////
 //
 // Brainfuck interface
@@ -59,7 +54,7 @@ end;
 
 define method run!
     (bf :: <bf>) => (bf :: <bf>)
-  while (program-not-finished?(bf))
+  while (bf.bf-pp < bf.bf-program.size)
     execute(bf.bf-program[bf.bf-pp], bf);
     bf.bf-pp := bf.bf-pp + 1
   end;
