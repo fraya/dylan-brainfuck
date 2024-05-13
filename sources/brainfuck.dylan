@@ -3,18 +3,6 @@ Synopsis: Brainfuck core
 Author: Fernando Raya
 Copyright: GPLv3
 
-define constant $memory-size
-  = 30000;
-
-define constant <memory-cell>
-  = <integer>;
-
-define constant <memory>
-  = limited(<vector>, of: <memory-cell>, size: $memory-size);
-
-define constant <memory-pointer>
-  = <integer>;
-
 define sealed class <bf> (<object>)
   slot bf-pp :: <program-pointer> = 0,
     init-keyword: program-pointer:;
@@ -22,7 +10,8 @@ define sealed class <bf> (<object>)
     init-keyword: memory-pointer:;
   constant slot bf-program :: <program>,
     required-init-keyword: program:;
-  constant slot bf-memory :: <memory> = make(<memory>, fill: 0),
+  constant slot bf-memory :: <memory>
+    = make(<memory>, fill: 0, size: $default-memory-size),
     init-keyword: memory:;
 end;
 
