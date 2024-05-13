@@ -8,6 +8,22 @@ define test test-memory ()
   assert-equal(0, memory.memory-item);
 end;
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// Test instructions
+//
+//////////////////////////////////////////////////////////////////////////////
+
+define test memory-data-increment-test ()
+  let bf = run(read-program("+"));
+  expect-equal(1, bf.program-pointer);
+  expect-equal(1, bf.interpreter-memory.memory-item);
+end test;
+
+define suite instruction-test-suite ()
+  test memory-data-increment-test;
+end suite;
+
 //////////////////////////////////////////////////////////////////////////////
 //
 // Read a program
@@ -27,7 +43,7 @@ end;
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// Reset to zero tests
+// Optimization tests
 //
 //////////////////////////////////////////////////////////////////////////////
 
@@ -57,11 +73,23 @@ define test test-precalculate-jumps ()
   assert-equal(make(<jump-forward>, address: 5), optimized.first); 
 end;
 
-define suite brainfuck-test-suite ()
-  test test-parse-instructions;
+define suite optimization-test-suite ()
   test test-reset-to-zero;
   test test-group-instructions;
   test test-precalculate-jumps;
+end suite;
+
+//////////////////////////////////////////////////////////////////////////////
+//
+// All tests
+//
+//////////////////////////////////////////////////////////////////////////////
+
+
+define suite brainfuck-test-suite ()
+  test test-parse-instructions;
+  suite instruction-test-suite;
+  suite optimization-test-suite;
 end;
 
 // Use `_build/bin/dylan-brainfuck-test-suite --help` to see options.

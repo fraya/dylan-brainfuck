@@ -35,6 +35,7 @@ define inline method program-forth
   interpreter.program-pointer := interpreter.program-pointer + 1
 end;
 
+
 ////////////////////////////////////////////////////////////////////////
 //
 // Execute methods

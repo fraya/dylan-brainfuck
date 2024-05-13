@@ -71,6 +71,7 @@ define module brainfuck-impl
   // Memory instructions 
   
   export
+    interpreter-memory,
     <memory-instruction>,
     instruction-amount,
     <memory-data-instruction>,
