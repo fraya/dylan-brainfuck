@@ -28,51 +28,54 @@ end;
 //
 ////////////////////////////////////////////////////////////////////////
 
+define function forward-range
+    (bf :: <bf>) => (range :: <range>)
+  range(from: bf.bf-pp + 1, to: bf.bf-program.size)
+end;
+
+define function backward-range
+    (bf :: <bf>) => (range :: <range>)
+  range(from: bf.bf-pp - 1, to: 0, by: -1)
+end;
+
+define function find-address
+    (bf :: <bf>,
+     instructions :: <range>,
+     jump :: <class>)
+ => (index :: <program-pointer>)
+  block (address)
+    let level = 1;
+    let match = if (jump = <jump-forward>) <jump-backward> else <jump-forward> end;
+    for (index in instructions)
+      let instruction = bf.bf-program[index];
+      select (object-class(instruction))
+	jump      => level := level + 1;
+	match     => level := level - 1;
+	otherwise => ;
+      end select;
+      if (level = 0) address(index) end;
+    end for;
+    error("Mismatched jump: %=", jump)
+  end block;
+end find-address;
+
 define sealed method execute
     (jump :: <jump-forward>, bf :: <bf>) => ()
-  local
-    method find-address(bf)
-      block (address)
-	let level = 1;
-	let jump  = bf.bf-program[bf.bf-pp];
-	for (index from bf.bf-pp + 1 below bf.bf-program.size)
-	  let instruction = bf.bf-program[index];
-	  select (object-class(instruction))
-	    <jump-forward>  => level := level + 1;
-	    <jump-backward> => level := level - 1;
-	    otherwise       => ;
-	  end select;
-	  if (level = 0) address(index) end;
-	end for;
-	error("Mismatched jump: %=", jump);
-      end block;
-    end method;
+  local method find-jump (bf)
+	  find-address(bf, forward-range(bf), <jump-forward>)
+	end method;
   when (bf.bf-memory[bf.bf-mp] = 0)
-    bf.bf-pp := jump.jump-address | find-address(bf)
+    bf.bf-pp := jump.jump-address | find-jump(bf)
   end;
 end execute;
-  
+
 define sealed method execute
     (jump :: <jump-backward>, bf :: <bf>) => ()
-  local
-    method find-address(bf)
-      block (address)
-	let level = 1;
-	let jump  = bf.bf-program[bf.bf-pp];
-	for (index from bf.bf-pp - 1 to 0 by -1)
-	  let instruction = bf.bf-program[index];
-	  select (object-class(instruction))
-	    <jump-forward>  => level := level - 1;
-	    <jump-backward> => level := level + 1;
-	    otherwise       => ;
-	  end select;
-	  if (level = 0) address(index) end;
-	end for;
-	error("Mismatched jump: %=", jump);
-      end block;
-    end method;
+  local method find-jump (bf)
+	  find-address(bf, backward-range(bf), <jump-backward>)
+	end method;
   when (bf.bf-memory[bf.bf-mp] ~= 0)
-    bf.bf-pp := jump.jump-address | find-address(bf)
+    bf.bf-pp := jump.jump-address | find-jump(bf)
   end;
 end execute;
 
