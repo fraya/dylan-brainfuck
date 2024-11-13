@@ -41,8 +41,8 @@ define method as
 end as;
 
 define function read-program
-    (filename :: <string>) => (program :: <program>)
-  with-open-file (fs = filename, element-type: <byte-character>)
+    (pathname :: <pathname>) => (program :: <program>)
+  with-open-file (fs = pathname, element-type: <byte-character>)
     as(<program>, stream-contents(fs))
   end
 end;
