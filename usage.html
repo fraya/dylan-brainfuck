@@ -2,10 +2,12 @@
 <html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#" /><link rel="search" title="Search" href="search.html" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Requirements" href="requirements.html" /><link rel="prev" title="Introduction" href="introduction.html" />
 
-    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 --><title>Index - Dylan brainfuck 1.0.0 documentation</title>
-<link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Usage - Dylan brainfuck 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
     
@@ -176,7 +178,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -197,9 +199,9 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 </ul>
@@ -221,7 +223,13 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/usage.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
@@ -230,59 +238,100 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          
-<section class="genindex-section">
-  <h1 id="index">Index</h1>
-  <div class="genindex-jumpbox"><a href="#B"><strong>B</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#P"><strong>P</strong></a></div>
-</section>
-<section id="B" class="genindex-section">
-  <h2>B</h2>
-  <table style="width: 100%" class="indextable genindextable"><tr>
-    <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="glossary.html#term-BF"><strong>BF</strong></a>
-</li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="glossary.html#term-Brainfuck"><strong>Brainfuck</strong></a>
-</li>
-    </ul></td>
-  </tr></table>
-</section>
+          <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h1>
+<p>The program executable is called <cite>brainfuck-app</cite>.</p>
+<p>If the executable is called without parameters it will show:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">USAGE:</span>
+<span class="go">        _build/bin/brainfuck-app &lt;program&gt; [optimization]</span>
 
-<section id="I" class="genindex-section">
-  <h2>I</h2>
-  <table style="width: 100%" class="indextable genindextable"><tr>
-    <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="glossary.html#term-Instruction"><strong>Instruction</strong></a>
-</li>
-    </ul></td>
-  </tr></table>
+<span class="go">optimization:</span>
+<span class="go">        0: No optimization</span>
+<span class="go">        1: Remove comments</span>
+<span class="go">        2: Level 1 and group instructions</span>
+<span class="go">        3: Level 2 and replace pattern [-] with reset to zero</span>
+<span class="go">        4: Level 3 and precalculate jumps (default)</span>
+</pre></div>
+</div>
+<p>The argument <em>&lt;program&gt;</em> is the name of a is a BF source program that
+is loaded and executed. If the program argument is missing, the USAGE
+text is shown.</p>
+<p>The <em>optimization</em> option is a number between 0 and 4 with a default
+value of 4. The higher the optimization number is, the faster the
+program will run.</p>
+<section id="optimizations">
+<h2>Optimizations<a class="headerlink" href="#optimizations" title="Link to this heading">¶</a></h2>
+<p>The interpreter can optimize a <a class="reference internal" href="glossary.html#term-Program"><span class="xref std std-term">program</span></a> with the following
+techniques:</p>
+<dl>
+<dt><strong>No optimization</strong> (level 0):</dt><dd><p>The program is executed without optimizations.</p>
+</dd>
+<dt><strong>Remove comments</strong> (level 1):</dt><dd><p>All characters that are not instructions are removed. The
+<a class="reference internal" href="glossary.html#term-Program"><span class="xref std std-term">program</span></a> is smaller and the time spent executing the NOP is
+saved.</p>
+</dd>
+<dt><strong>Group instructions</strong> (level 2):</dt><dd><p>This optimization apply first the <em>remove comments</em> optimization.
+All instructions that are of the same type are grouped and executed
+as one.</p>
+<p>For instance, two instructions that increment the memory data by 1
+<code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> are grouped and increment the memory data by 2.</p>
+<p>If a instruction is followed by its opposite, the instructions are
+cancelled. E.g. If an increment memory data is followed by a decrement
+memory data the instructions are removed (<code class="docutils literal notranslate"><span class="pre">&gt;&lt;</span></code>).</p>
+<p>Instructions that are grouped are:</p>
+<ul class="simple">
+<li><p>Increment data pointer.</p></li>
+<li><p>Decrement data pointer.</p></li>
+<li><p>Increment memory data.</p></li>
+<li><p>Decrement memory data.</p></li>
+</ul>
+</dd>
+<dt><strong>Reset to zero</strong> (level 3):</dt><dd><p>This optimization apply first the level 1 and level 2 optimizations.</p>
+<p>The pattern <code class="docutils literal notranslate"><span class="pre">[-]</span></code> is replaced with an instruction that resets to
+zero (0) the memory data pointed by the data pointer.</p>
+</dd>
+<dt><strong>Precalculate jumps</strong> (level 4):</dt><dd><p>This optimization apply first the level 1, level 2 and level 3
+optimizations.</p>
+<p>This optimization MUST BE done the last.</p>
+<p>The program search for the complementary of <code class="docutils literal notranslate"><span class="pre">[</span></code> that is <code class="docutils literal notranslate"><span class="pre">]</span></code> and
+save the direction. Whe the instruction is executed it jumps to the
+direction stored.</p>
+</dd>
+</dl>
 </section>
-
-<section id="P" class="genindex-section">
-  <h2>P</h2>
-  <table style="width: 100%" class="indextable genindextable"><tr>
-    <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="glossary.html#term-Program"><strong>Program</strong></a>
-</li>
-    </ul></td>
-  </tr></table>
 </section>
-
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          
-          
+          <a class="next-page" href="requirements.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Requirements</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="introduction.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Introduction</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -301,8 +350,27 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Usage</a><ul>
+<li><a class="reference internal" href="#optimizations">Optimizations</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
