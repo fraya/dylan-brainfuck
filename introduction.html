@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Introduction" href="introduction.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Requirements" href="requirements.html" /><link rel="prev" title="Dylan brainfuck" href="index.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>Dylan brainfuck 1.0.0 documentation</title>
+        <title>Introduction - Dylan brainfuck 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="#"><div class="brand">Dylan brainfuck 1.0.0 documentation</div></a>
+      <a href="index.html"><div class="brand">Dylan brainfuck 1.0.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -187,7 +187,7 @@
   <aside class="sidebar-drawer">
     <div class="sidebar-container">
       
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
   <span class="sidebar-brand-text">Dylan brainfuck 1.0.0 documentation</span>
@@ -199,9 +199,9 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html#usage">Usage</a></li>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#usage">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 </ul>
@@ -224,7 +224,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="_sources/index.rst.txt" title="View this page">
+  <a class="muted-link" href="_sources/introduction.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -244,25 +244,29 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="dylan-brainfuck">
-<h1>Dylan brainfuck<a class="headerlink" href="#dylan-brainfuck" title="Link to this heading">¶</a></h1>
-<p>A brainfuck interpreter made in Open Dylan programming language.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This program is not create to be <em>as fast as possible</em>. It’s a
-learning project.</p>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html#usage">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="requirements.html#program-requirements">Program requirements</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
-</ul>
+          <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">¶</a></h1>
+<p><a class="reference internal" href="glossary.html#term-Brainfuck"><span class="xref std std-term">Brainfuck</span></a> (<a class="reference internal" href="glossary.html#term-BF"><span class="xref std std-term">BF</span></a>) is an esoteric programming language
+with only eight simple commands, a data pointer, and an instruction
+pointer.</p>
+<p>The present program is a vehicle to learn programming and design in
+the Open Dylan programming language. The program could be simpler and
+faster but is designed for experimentation.</p>
+</section>
+<section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h1>
+<p>The program executable is called <cite>brainfuck-app</cite>.</p>
+<p>If the executable is called without parameters it will show:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">USAGE:</span>
+<span class="go">        _build/bin/brainfuck-app &lt;program&gt; [optimization]</span>
+
+<span class="go">optimization:</span>
+<span class="go">        0: No optimization</span>
+<span class="go">        1: Remove comments</span>
+<span class="go">        2: Level 1 and group instructions</span>
+<span class="go">        3: Level 2 and replace pattern [-] with reset to zero</span>
+<span class="go">        4: Level 3 and precalculate jumps (default)</span>
+</pre></div>
 </div>
 </section>
 
@@ -271,16 +275,26 @@ learning project.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="introduction.html">
+          <a class="next-page" href="requirements.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Introduction</div>
+                <div class="title">Requirements</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
