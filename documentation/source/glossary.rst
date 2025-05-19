@@ -5,7 +5,7 @@ Glossary
 
    Program
 
-     Contains instructions. A instruction can be accessed by an
+     Contains instructions. An instruction can be accessed by an
      index. New instructions can be added returning a new program.
 
    Instruction
