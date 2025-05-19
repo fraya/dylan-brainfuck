@@ -54,3 +54,15 @@ In the directory `examples` there are several brainfuck programs.
 - [X] Group instructions
 - [X] Replace `[-]` pattern for a reset to zero instruction.
 - [X] Precomputed jumps
+
+## Project organization
+
+```bash
+├── documentation       # documentation in .rst format
+├── dylan-package.json  # project description
+├── examples            # program examples in .bf language
+└── src                 # source code
+    ├── app               # application
+    ├── lib               # library
+    └── tests             # tests
+```
