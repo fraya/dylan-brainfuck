@@ -15,5 +15,5 @@ define module brainfuck-test-suite
   use brainfuck-impl;
 
   export
-    brainfuck-test-suite;
+    brainfuck-test-instructions;
 end module;
