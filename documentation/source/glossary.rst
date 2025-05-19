@@ -3,6 +3,15 @@ Glossary
 
 .. glossary::
 
+   BF
+
+      See :term:`Brainfuck`.
+
+   Brainfuck
+
+      Abbreviated as :term:`BF`. An esoteric and minimalistic
+      programming language.
+
    Program
 
      Contains instructions. An instruction can be accessed by an

@@ -12,5 +12,6 @@ A brainfuck interpreter made in Open Dylan programming language.
    :maxdepth: 2
    :caption: Contents:
 
+   introduction             
    requirements
    glossary
