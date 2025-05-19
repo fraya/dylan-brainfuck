@@ -78,7 +78,7 @@ end suite;
 //////////////////////////////////////////////////////////////////////////////
 
 
-define suite brainfuck-test-suite ()
+define suite brainfuck-test-instructions ()
   test test-parse-instructions;
   suite instruction-test-suite;
   suite optimization-test-suite;
