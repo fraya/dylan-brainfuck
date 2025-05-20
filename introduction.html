@@ -178,7 +178,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -238,7 +238,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -252,6 +252,69 @@ pointer.</p>
 <p>The present program is a vehicle to learn programming and design in
 the Open Dylan programming language. The program could be simpler and
 faster but is designed for experimentation.</p>
+<section id="language-design">
+<h2>Language design<a class="headerlink" href="#language-design" title="Link to this heading">¶</a></h2>
+<p>The language specification from Wikipedia <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
+<p>The language consists of eight commands. A brainfuck program is a
+sequence of these commands, possibly interspersed with other
+characters (which are ignored). The commands are executed
+sequentially, with some exceptions: an instruction pointer begins at
+the first command, and each command it points to is executed, after
+which it normally moves forward to the next command. The program
+terminates when the instruction pointer moves past the last command.</p>
+<p>The brainfuck language uses a simple machine model consisting of the
+program and instruction pointer, as well as a one-dimensional array of
+at least 30,000 byte cells initialized to zero; a movable data pointer
+(initialized to point to the leftmost byte of the array); and two
+streams of bytes for input and output (most often connected to a
+keyboard and a monitor respectively, and using the ASCII character
+encoding).</p>
+<p>The eight language commands each consist of a single character:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Character</p></th>
+<th class="head"><p>Instruction Performed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;</span></code></p></td>
+<td><p>Decrement the data pointer by one (to point to the next cell to the
+left).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">+</span></code></p></td>
+<td><p>Increment the byte at the data pointer by one.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">-</span></code></p></td>
+<td><p>Decrement the byte at the data pointer by one.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">.</span></code></p></td>
+<td><p>Output the byte at the data pointer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">,</span></code></p></td>
+<td><p>Accept one byte of input, storing its value in the byte at the data
+pointer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">[</span></code></p></td>
+<td><p>If the byte at the data pointer is zero, then instead of moving
+the instruction pointer forward to the next command, jump it
+forward to the command after the matching <code class="docutils literal notranslate"><span class="pre">]</span></code> command.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">]</span></code></p></td>
+<td><p>If the byte at the data pointer is nonzero, then instead of
+moving the instruction pointer forward to the next command,
+jump it back to the command after the matching <code class="docutils literal notranslate"><span class="pre">[</span></code> command.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://en.wikipedia.org/w/index.php?title=Brainfuck&amp;oldid=1281127911">https://en.wikipedia.org/w/index.php?title=Brainfuck&amp;oldid=1281127911</a></p>
+</aside>
+</aside>
+</section>
 </section>
 
         </article>
@@ -297,8 +360,27 @@ faster but is designed for experimentation.</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#language-design">Language design</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
